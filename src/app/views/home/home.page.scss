@@ -1,0 +1,24 @@
+.bg-img-chkl{
+    background-image: url('/src/assets/images/17.jpg') no-repeat center center;
+    opacity: 0.2;
+    max-height: 90vh;
+    max-width: 90vw;
+    position: absolute;
+}
+
+.bg-img-chkl-align{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.card-body{
+    padding: 5px !important;
+}
+
+.card-title,
+.card-footer{
+    padding: 0px !important;
+    margin: 0px !important;
+}

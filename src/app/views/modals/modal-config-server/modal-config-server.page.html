@@ -1,0 +1,57 @@
+<ion-content >
+    <div class="h2 text-center pt-5 tw-bold text-danger">Configuração de API</div>
+
+
+    <div class="container p-5">
+
+        <form [formGroup]="formServer" (ngSubmit)="save()">
+            <div class="input-group">
+                <label class="input-group-text" for="inputGroupSelect01">
+                    <ion-icon name="git-commit-outline"></ion-icon>
+                </label>
+                <select class="form-select" [ngClass]="{'is-invalid': !isValid('protocol')}" formControlName="protocol">
+                    <option disabled>Escolha uma opção</option>
+                    <option value="http">HTTP</option>
+                    <option value="https">HTTPS</option>
+                </select>
+            </div>
+            <div class="pl-5 ml-5 fs-10 text-danger" *ngIf="!isValid('protocol')">Uma opção deve ser escolhida</div>
+    
+            <div class="input-group mt-4">
+                <span class="input-group-text">
+                    <ion-icon name="globe-outline"></ion-icon>
+                </span>
+                    <input type="text" class="form-control" [ngClass]="{'is-invalid': !isValid('ip')}" placeholder="IP do Servidor" formControlName="ip">
+            </div>
+            <div class="pl-5 ml-5 fs-10 text-danger" *ngIf="!isValid('ip')">Um IP ou Domínio válido deve ser Informado.</div>
+    
+            <div class="input-group mt-4">
+                <span class="input-group-text">
+                    <ion-icon name="cloud-upload-outline"></ion-icon>
+                </span>
+                    <input type="text" class="form-control" [ngClass]="{'is-invalid': !isValid('port')}" placeholder="Porta do Servidor" formControlName="port">
+            </div>
+            <div class="pl-5 ml-5 fs-10 text-danger" *ngIf="!isValid('port')">A Porta valida deve ser Informada.</div>
+    
+            <div class="input-group mt-4">
+                <span class="input-group-text">
+                    <ion-icon name="hourglass-outline"></ion-icon>
+                </span>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': !isValid('timeout')}" placeholder="Timeout em segundos" formControlName="timeout">
+            </div>
+            <div class="pl-5 ml-5 fs-10 text-danger" *ngIf="!isValid('timeout')">O Tempo de resposta deve ser Informado entre 10 e 120 Segundos.</div>
+    
+    
+            <ion-button type="submit" expand="full" color="success" class="mt-3" strong [disabled]="!formServer.valid">
+                <ion-icon slot="start" name="save-outline"></ion-icon>
+                Gravar
+            </ion-button>  
+    
+            <ion-button type="button" expand="full" color="danger" class="mt-3" strong (click)="cancel()">
+                <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+                Cancelar
+            </ion-button> 
+        </form>
+
+    </div>         
+</ion-content>

@@ -24,3 +24,20 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+.bg-gray{
+    background-color: rgba(219, 217, 217, 0.897);
+}
+
+.btn-micro{
+    padding: 0px 5px !important;
+}
+
+.cursor-pointer, #logout {
+    cursor: pointer !important;
+}
+
+#logout:hover{
+    --background-hover: red !important;
+    background-color: red !important;
+}
