@@ -69,7 +69,7 @@ export class LoginPage implements OnInit {
             this.clearForm();
 
             response = await this.http.post(Routes.PATH.AUTH, data);
-            SessionService.setSessionItem('token', response.data.token);
+            SessionService.setSessionItem('token', response.payload.token);
             this.router.navigate(['home']);
             this.msgServ.toastInfo(response.message, 'success');
             this.menuCtrl.enable(true);
