@@ -1,9 +1,11 @@
+import { PlatformLocation } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { App } from '@capacitor/app';
 import { ModalController } from '@ionic/angular';
 import { MessagesService } from 'src/app/services/commons/MessagesService';
 import { StorageService } from 'src/app/services/commons/StorageService';
-
 @Component({
     selector: 'app-modal-config-server',
     templateUrl: './modal-config-server.page.html',
@@ -15,7 +17,8 @@ export class ModalConfigServerPage implements OnInit {
     constructor(
         public formBuilder: FormBuilder,
         public modalCtrl: ModalController,
-        private msgServ: MessagesService
+        private msgServ: MessagesService,
+        private plataform: PlatformLocation
     ) { }
 
     ngOnInit() {
@@ -32,8 +35,12 @@ export class ModalConfigServerPage implements OnInit {
             }
 
             StorageService.setSessionItem('provider-routine', data);
-            this.msgServ.toastInfo('Informações do Servidor salvas com sucesso.','success');
             this.modalCtrl.dismiss();
+
+            this.msgServ.toastInfo('Configurações salvas. O APP será fechado para aplicar as configurações.','success');
+            setTimeout(function () {
+                App.exitApp();
+            }, 3000);
         }
     }
 
