@@ -4,20 +4,11 @@ import { AuthGuard } from './guards/auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login',  pathMatch: 'full' },
+  { path: 'splash', loadChildren: () => import('./views/splash/splash.module').then( m => m.SplashPageModule) },
   { path: 'login', loadChildren: () => import('./views/login/login.module').then( m => m.LoginPageModule) },
   { path: 'home', canActivate: [AuthGuard], loadChildren: () => import('./views/home/home.module').then( m => m.HomePageModule) },
-  {
-    path: 'modal-config-server',
-    loadChildren: () => import('./views/modals/modal-config-server/modal-config-server.module').then( m => m.ModalConfigServerPageModule)
-  },
-  {
-    path: 'modal-config-server',
-    loadChildren: () => import('./views/modals/modal-config-server/modal-config-server.module').then( m => m.ModalConfigServerPageModule)
-  },
-  {
-    path: 'modal-config-server',
-    loadChildren: () => import('./views/modals/modal-config-server/modal-config-server.module').then( m => m.ModalConfigServerPageModule)
-  },
+  { path: 'modal-config-server', loadChildren: () => import('./views/modals/modal-config-server/modal-config-server.module').then( m => m.ModalConfigServerPageModule)},
+
 ];
 
 @NgModule({

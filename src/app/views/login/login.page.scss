@@ -7,8 +7,18 @@ ion-item {
 }
 
 #login-container{
-    background: rgb(1,0,24);
-    background: linear-gradient(50deg, rgba(1,0,24,1) 0%, rgba(20,0,70,1) 53%, rgba(32,0,111,1) 100%);
+    // background: rgb(1,0,24);
+    // background: linear-gradient(50deg, rgba(1,0,24,1) 0%, rgba(20,0,70,1) 53%, rgba(32,0,111,1) 100%);
+
+    background: rgb(114, 39, 114);
+    background: linear-gradient(135deg, rgb(133, 37, 133) 0%, rgb(86, 33, 99) 28%, rgb(19, 1, 36) 100%);
+}
+
+.login-wrap{
+    border-radius: 1rem !important;
+    width: 50% !important;
+    min-width: 200px !important;
+    max-width: 400px !important;
 }
 
 @media screen and ( max-height: 311px ) {
@@ -17,7 +27,10 @@ ion-item {
 	}
 }
 
-.login-wrap{
-    border-radius: 2rem !important;
 
-}
+
+
+
+
+
+
