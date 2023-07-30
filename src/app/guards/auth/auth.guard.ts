@@ -15,14 +15,14 @@ export class AuthGuard implements CanActivate {
     return await this.checkAuth();
   }
 
-  private async checkAuth() {
+  public async checkAuth() {
     let authenticated = SessionService.getSessionItem('token');
     authenticated = authenticated ? true : false;
     return authenticated || this.routeToLogin();
   }
 
   private routeToLogin(): boolean {
-    this.msgServ.toastInfo('Faça login para acessar o APP.', 'error');
+    //this.msgServ.toastInfo('Faça login para acessar o APP.', 'error');
     this.navCtrl.navigateRoot('/login');
     return false;
   }
