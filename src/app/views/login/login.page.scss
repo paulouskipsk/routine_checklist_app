@@ -1,5 +1,5 @@
 .logo-img img{
-    width: 15em;
+    width: 17em;
 }
 
 ion-item {
@@ -7,18 +7,27 @@ ion-item {
 }
 
 #login-container{
-    // background: rgb(1,0,24);
-    // background: linear-gradient(50deg, rgba(1,0,24,1) 0%, rgba(20,0,70,1) 53%, rgba(32,0,111,1) 100%);
-
     background: rgb(114, 39, 114);
-    background: linear-gradient(135deg, rgb(133, 37, 133) 0%, rgb(86, 33, 99) 28%, rgb(19, 1, 36) 100%);
+    background: linear-gradient(135deg, rgb(174, 84, 235) 5%, rgb(116, 42, 158) 38%, rgb(44, 36, 78) 80%);
 }
 
-.login-wrap{
-    border-radius: 1rem !important;
-    width: 50% !important;
+.login-wrap, .card{
+    border-radius: 0.5rem !important;
+    width: 90% !important;
     min-width: 200px !important;
-    max-width: 400px !important;
+    max-width: 500px !important;
+    border: 1px solid rgba(255, 255, 255, 0.432);
+    box-shadow: 0 1px 8px 0 rgba(216, 216, 216, 100);    
+}
+
+.login-wrap, .card{
+    background-color: rgb(255, 255, 255) !important;
+}
+
+input, .list-md, ion-item > *, ion-list >*{
+    background-color: rgba(255, 255, 255, 0) !important;
+    --background-color: rgba(255, 255, 255, 0) !important;
+    --ion-item-background:rgba(255, 255, 255, 0) !important;
 }
 
 @media screen and ( max-height: 311px ) {
