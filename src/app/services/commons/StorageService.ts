@@ -13,6 +13,12 @@ export class StorageService {
         return JSON.parse(data);
     }
 
+    public static getAndRemoveSessionItem(key: string) {
+        let data: any = localStorage.getItem(key);
+        localStorage.removeItem(key);
+        return JSON.parse(data);
+    }
+
     public static setSessionItem(key: string, value: any) {
         let valueAux = JSON.stringify(value);
         localStorage.setItem(key, valueAux);

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Resposta da Tarefa: {{this.checklistItemMov.chmv_id}}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding modal-fullscreen" >
+
+  <h5 class="text-primary fw-bold"> {{this.checklistItemMov.id +" - "+this.checklistItemMov.description}}</h5>
+  <hr/>
+
+
+</ion-content> 
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="row mx-2">
+      <div class="col-6">
+        <ion-button expand="full" (click)="confirm()" color="success" [strong]="true">Salvar</ion-button>
+      </div>
+      <div class="col-6">
+        <ion-button expand="full" (click)="cancel()" color="danger" [strong]="true">Cancelar</ion-button>
+      </div>
+    </div>
+
+    
+     
+
+  </ion-toolbar>
+</ion-footer>

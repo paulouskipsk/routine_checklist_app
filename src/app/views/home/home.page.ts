@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Routes } from 'src/app/models/utils/Routes';
 import { HttpService } from 'src/app/services/commons/HttpService';
+import { StorageService } from 'src/app/services/commons/StorageService';
 
 @Component({
    selector: 'app-home',
@@ -12,10 +14,18 @@ export class HomePage implements OnInit {
 
    constructor(
       private http: HttpService,
+      private router: Router
    ) { }
 
    ngOnInit() {
       this.getPendingTasksForUser();
+   }
+
+   handleRefresh(event:any) {
+      setTimeout(() => {
+         this.getPendingTasksForUser();
+         event.target.complete();
+      }, 2000);
    }
 
    public async getPendingTasksForUser() {
@@ -54,9 +64,9 @@ export class HomePage implements OnInit {
       return text;
    }
 
-   public openChecklist(checklistMov: any){
-
-      alert("Abrindo checklistMov cod: "+ checklistMov.id)
+   public openTask(checklistMov: any){
+      StorageService.setSessionItem('checklistMov', checklistMov);
+      this.router.navigate(['tarefa-checklist']);
    }
 
 }

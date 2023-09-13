@@ -55,7 +55,7 @@ export class ModalConfigServerPage implements OnInit {
                 Validators.required
             ])],
             port: ['', Validators.compose([
-                Validators.required,
+                // Validators.required,
                 Validators.min(1),
                 Validators.max(65000)
             ])],

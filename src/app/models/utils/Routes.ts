@@ -8,6 +8,8 @@ export class Routes {
         LOGOUT: '/auth/logout',
 
         GET_TASKS_BY_USER: '/checklistmov/by-user',
+
+        GET_CHECKLIST_ITENS_MOVS: '/checklistitemmov/by-checklistmov',
     }
 
 }

@@ -10,46 +10,35 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div class=".bg-img-chkl">
     <div *ngFor="let checklistMov of this.pendingTasks">
-
-
-      <div class="card border text-left m-2 mt-3" id="card-home" (click)="openChecklist(checklistMov)">
+      <div class="card border text-left m-2 mt-3 card-shadow" id="card-home" (click)="openTask(checklistMov)">
         <div class="card-header border bg-gray fs-6 fw-bold py-0 pt-1">
           <div class="row">
             <div class="col-6 text-start fs-12 text-primary">CHECKLIST</div>
-          </div>
-  
+          </div>  
         </div>
+
         <div class="card-body pb-0 mb-0">
           <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tarefa:</span> {{ checklistMov.id }} </p>
           <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Descrição: </span>{{ checklistMov.description }}</p>
           <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tot. Perguntas: </span>{{ checklistMov.total_questions }}</p>
           <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tot. Perg. Respondidas: </span>{{ checklistMov.total_answered }}</p>
           <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Percentual Concluído: </span>{{ checklistMov.percentage_processed }}%</p>
-  
-          <!-- <a href="#" class="btn btn-outline-primary btn-micro float-end">Iniciar</a> -->
         </div>
-        <div class="card-footer text-muted border-secondary fs-11 fw-bold">
 
+        <div class="card-footer text-muted border-secondary fs-11 fw-bold">
           <ion-icon name="ellipse" color="dark" class="mt-1 ps-2" *ngIf="checklistMov.time_left <= 0"></ion-icon>
           <ion-icon name="ellipse" color="danger" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 0 && checklistMov.time_left <= 6"></ion-icon>
           <ion-icon name="ellipse" color="warning" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 6 && checklistMov.time_left <= 12"></ion-icon>
           <ion-icon name="ellipse" color="success" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 12"></ion-icon>
-
-
             {{ "Faltam "+ getTimeLeftText(checklistMov.time_left) +" para fechamento da tarefa"}}
         </div>
       </div>
-
     </div>
-
-    
-
-
-
-
-
-
   </div>
 </ion-content>

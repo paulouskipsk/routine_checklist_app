@@ -95,7 +95,8 @@ export class LoginPage implements OnInit {
 
     public async configServer(){
         let configServerPage = await this.modalCtrl.create({
-            component: ModalConfigServerPage
+            component: ModalConfigServerPage,
+            cssClass: 'fullscreen'
         }).then(modal => {
             modal.present();
         })        

@@ -21,9 +21,10 @@ export class HttpService {
         private msgServ: MessagesService,
         private modalCtrl: ModalController
     ) {
-        this.apiAddress = StorageService.getSessionItem('provider-routine');
-        if(this.apiAddress){
-            this.apiAddress =  `${this.apiAddress.protocol}://${this.apiAddress.ip}:${this.apiAddress.port}/api`;
+        let apiData = StorageService.getSessionItem('provider-routine');
+        if(apiData){
+            this.apiAddress = `${apiData.protocol}://${apiData.ip}`;
+            this.apiAddress += apiData.port ? `:${apiData.port}/api` : '/api';
         }else{
             msgServ.toastInfo('Endereço da API não foi informado. Verifique!', 'error');
             this.configServer();
@@ -39,6 +40,9 @@ export class HttpService {
                 })
             };
             data = JSON.stringify(data);
+
+            console.log('RRRRR', this.apiAddress + route)
+
             return new Promise((resolve, reject) => {
                 this.http.post(this.apiAddress + route, data, options).subscribe(data => {
                     resolve(data);
