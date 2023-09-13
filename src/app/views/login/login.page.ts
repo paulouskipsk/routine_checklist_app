@@ -74,9 +74,6 @@ export class LoginPage implements OnInit {
             this.msgServ.toastInfo(response.message, 'success');
             this.menuCtrl.enable(true);
         } catch (responseError : any) {
-
-            console.log(responseError)
-
             let msg = responseError.message;
             if(responseError.status == 401){
                 msg = responseError.error ? responseError.error.message : responseError;

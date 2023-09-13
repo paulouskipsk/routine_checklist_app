@@ -16,12 +16,6 @@ export class HttpService {
     public token: any;
     private apiAddress: any;
 
-    private httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
-    };
-
     constructor(
         private http: HttpClient, 
         private msgServ: MessagesService,
@@ -34,18 +28,19 @@ export class HttpService {
             msgServ.toastInfo('Endereço da API não foi informado. Verifique!', 'error');
             this.configServer();
         }
-
-        this.token = this.getToken();
-        if (this.token) {
-            this.httpOptions.headers.append('Autorization', 'Bearer ' + this.token)
-        }
     }
 
     public post(route: string, data: any) {
         try {
+            var options = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer "+this.getToken()
+                })
+            };
             data = JSON.stringify(data);
             return new Promise((resolve, reject) => {
-                this.http.post(this.apiAddress + route, data, this.httpOptions).subscribe(data => {
+                this.http.post(this.apiAddress + route, data, options).subscribe(data => {
                     resolve(data);
                 }, err => {
                     reject(err);
@@ -56,8 +51,38 @@ export class HttpService {
         }
     }
 
+    public get(route: string, data: Map<any, any> = new Map()) {
+        try {
+            let params = '';
+            var options = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer "+this.getToken()
+                })
+            };
+
+            if(data.size > 0){
+                data.forEach((value: any, key: any) => {
+                    if(params == '') params = '?'
+                    else params += '&';
+                    params += `${key}=${value}`
+                });
+            }
+
+            return new Promise((resolve, reject) => {
+                this.http.get(this.apiAddress + route + params, options).subscribe(data => {
+                    resolve(data);
+                }, err => {
+                    reject(err);
+                });
+            });
+        } catch (error) {
+            throw "Erro ao fazer o GET";
+        }
+    }
+
     public getToken() {
-        this.token = SessionService.getSessionItem('token');
+        return SessionService.getSessionItem('token');
     }
 
     public async configServer(){

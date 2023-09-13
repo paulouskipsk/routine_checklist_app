@@ -6,6 +6,8 @@ export class Routes {
         LOGIN: '/auth/login',
         AUTH: '/auth/authenticate',
         LOGOUT: '/auth/logout',
+
+        GET_TASKS_BY_USER: '/checklistmov/by-user',
     }
 
 }
