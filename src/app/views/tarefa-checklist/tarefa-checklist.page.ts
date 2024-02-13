@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { Routes } from 'src/app/models/utils/Routes';
 import { HttpService } from 'src/app/services/commons/HttpService';
-import { SessionService } from 'src/app/services/commons/SessionService';
 import { StorageService } from 'src/app/services/commons/StorageService';
-import { ResponseChecklistPage } from '../modals/checklist/response-checklist/response-checklist.page';
+import { Router } from '@angular/router';
+import { Routes } from 'src/app/models/utils/Routes';
 
 @Component({
    selector: 'app-tarefa-checklist',
@@ -12,39 +10,49 @@ import { ResponseChecklistPage } from '../modals/checklist/response-checklist/re
    styleUrls: ['./tarefa-checklist.page.scss'],
 })
 export class TarefaChecklistPage implements OnInit {
-   public checklistMov: any;
-   public checklistItensMovs: any;
+   public checklistMov: any = {id: '', description: ''};
+   public checklistItensMovs: any = [];
+   public sectors: Array<String> = new Array();
+   public sectorSelected: String = ''; 
+   private chmvId: any;
 
    constructor(
       private http: HttpService,
-      private modalCtrl: ModalController
-   ) {
-      this.checklistMov = StorageService.getAndRemoveSessionItem('checklistMov');
+      private router: Router
+   ) {     
+      this.chmvId = StorageService.getAndRemoveSessionItem('checklistMovId');     
    }
 
-   ngOnInit() {
-      this.getChecklistItensMovs();
+   ngOnInit() {  }
+
+   ionViewWillEnter() {
+      this.getChecklistMov(); 
+   }
+
+   private async getChecklistMov(){
+      let response: any = await this.http.get(Routes.PATH.GET_CHECKLIST_MOV +"/"+ this.chmvId);
+      this.checklistMov = response?.payload.checklistMov;
+      this.checklistItensMovs = this.checklistMov.checklist_itens_movs;
+      this.getChecklistItensMovs(); 
    }
 
    public async getChecklistItensMovs() {
-      try {
+      try {        
          let data: Map<any, any> = new Map();
          data.set('chmv_id', this.checklistMov.id);
-         let response:any = await this.http.get(Routes.PATH.GET_CHECKLIST_ITENS_MOVS, data);
-         this.checklistItensMovs = response?.payload?.checklistsItensMovs
-
-         if(this.checklistItensMovs == null || this.checklistItensMovs == '')
+        
+         if(this.checklistItensMovs == null || this.checklistItensMovs == '') {
             this.checklistItensMovs = new Array();
-
-            console.log("ITENS:::: ", this.checklistItensMovs, response)
+         } else {
+            this.sectors.push("Todos");
+            this.sectorSelected = "Todos";
+            this.checklistItensMovs.forEach((checklistItemMov: any) => {
+               this.sectors.push(checklistItemMov.sector.description);
+            });
+         }
       } catch (error) {
 
       }
-
-   }
-
-   openItem(checklistItemMov: any){
-      alert('Abriu o item');
    }
 
    handleRefresh(event:any) {
@@ -54,17 +62,16 @@ export class TarefaChecklistPage implements OnInit {
       }, 2500);
    }
 
-   public async answerModal(checklistItemMov:any){
+   public async questionPage(checklistItemMov:any){
       StorageService.setSessionItem('checklistItemMov', checklistItemMov);
-      let configServerPage = await this.modalCtrl.create({
-          component: ResponseChecklistPage,
-          backdropDismiss: false,
-          cssClass: 'fullscreen'
-      }).then(modal => {
-          modal.present();
-      });
+      this.router.navigateByUrl('checklist-question');
+      
+      // let configServerPage = await this.modalCtrl.create({
+      //     component: ResponseChecklistPage,
+      //     backdropDismiss: false,
+      //     cssClass: 'fullscreen'
+      // }).then(modal => {
+      //     modal.present();
+      // });
    }
-
-
-
 }

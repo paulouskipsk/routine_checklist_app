@@ -10,14 +10,16 @@ import { StorageService } from 'src/app/services/commons/StorageService';
    styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-   public pendingTasks: any;
+   public pendingTasks: any = new Array();
 
    constructor(
       private http: HttpService,
       private router: Router
    ) { }
 
-   ngOnInit() {
+   ngOnInit() { }
+
+   ionViewWillEnter() {
       this.getPendingTasksForUser();
    }
 
@@ -45,9 +47,6 @@ export class HomePage implements OnInit {
                checklistMov['time_left'] = diff;
             });
          }
-
-         console.log("tarefas pendentes", this.pendingTasks)
-
       } catch (error) {
 
       }
@@ -65,7 +64,8 @@ export class HomePage implements OnInit {
    }
 
    public openTask(checklistMov: any){
-      StorageService.setSessionItem('checklistMov', checklistMov);
+      console.log("HOME  "+checklistMov.id)
+      StorageService.setSessionItem('checklistMovId', checklistMov.id);
       this.router.navigate(['tarefa-checklist']);
    }
 

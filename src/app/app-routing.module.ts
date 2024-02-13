@@ -10,6 +10,10 @@ const routes: Routes = [
   { path: 'modal-config-server', loadChildren: () => import('./views/modals/modal-config-server/modal-config-server.module').then( m => m.ModalConfigServerPageModule)},
   { path: 'tarefa-checklist', canActivate: [AuthGuard], loadChildren: () => import('./views/tarefa-checklist/tarefa-checklist.module').then( m => m.TarefaChecklistPageModule)},
   { path: 'response-checklist-modal', loadChildren: () => import('./views/modals/checklist/response-checklist/response-checklist.module').then( m => m.ResponseChecklistPageModule)},
+  {
+    path: 'checklist-question',
+    loadChildren: () => import('./views/checklist-question/checklist-question.module').then( m => m.ChecklistQuestionPageModule)
+  },
 
 ];
 

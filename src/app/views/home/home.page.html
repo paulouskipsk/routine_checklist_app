@@ -14,8 +14,12 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div class=".bg-img-chkl">
-    <div *ngFor="let checklistMov of this.pendingTasks">
+  <div *ngIf="pendingTasks.length == 0">
+    <h1 class="no-itens">Não há Checklists Pendentes</h1>
+  </div>
+
+  <div class=".bg-img-chkl" *ngIf="pendingTasks.length > 0">
+    <div *ngFor="let checklistMov of pendingTasks">
       <div class="card border text-left m-2 mt-3 card-shadow" id="card-home" (click)="openTask(checklistMov)">
         <div class="card-header border bg-gray fs-6 fw-bold py-0 pt-1">
           <div class="row">

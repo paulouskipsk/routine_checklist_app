@@ -40,9 +40,6 @@ export class HttpService {
                 })
             };
             data = JSON.stringify(data);
-
-            console.log('RRRRR', this.apiAddress + route)
-
             return new Promise((resolve, reject) => {
                 this.http.post(this.apiAddress + route, data, options).subscribe(data => {
                     resolve(data);
@@ -52,6 +49,37 @@ export class HttpService {
             });
         } catch (error) {
             throw "Erro ao fazer o post";
+        }
+    }
+
+    private getJson(data:any){
+        // if(typeof data == 'Map'){
+
+        // }
+    }
+
+    public put(route: string, data: any) {
+        try {
+            var options = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer "+this.getToken()
+                })
+            };
+           // data = JSON.stringify(data);
+
+            data = JSON.stringify(Object.fromEntries(data))            
+            
+            
+            return new Promise((resolve, reject) => {
+                this.http.put(this.apiAddress + route, data, options).subscribe(data => {
+                    resolve(data);
+                }, err => {
+                    reject(err);
+                });
+            });
+        } catch (error) {
+            throw "Erro ao fazer o Put";
         }
     }
 

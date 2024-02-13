@@ -1,0 +1,110 @@
+<ion-header >
+  <ion-toolbar class="toolbar">
+     <ion-title class="fw-bold">{{"Tarefa: " + this.checklistItemMov.chmv_id + ", Pergunta Cod.: " + this.checklistItemMov.id }}</ion-title>    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding modal-fullscreen" >
+
+  <div>
+     <span class="text-primary fw-bold fs-17">{{"Descr. pergunta " + ("000" + this.checklistItemMov.sequence).slice(-3) + ": "}}</span>
+     <span class="text-dark fw-normal fs-17">{{this.checklistItemMov.description }}</span>      
+  </div>
+  <hr/>
+
+  <div class="row" *ngIf="this.checklistItemMov.type == 'S'">
+     <div class="col-6 m-0 p-1">
+        <div class="d-grid gap-2">
+           <button type="button" class="btn btn-outline-danger fw-bold" id="response_n" (click)="setResponse('N')">
+              Não &nbsp;<i class="fa-regular fa-thumbs-down"></i>
+           </button>   
+        </div>
+     </div>
+     <div class="col-6 m-0 p-1">
+        <div class="d-grid gap-2">
+           <button type="button" class="btn btn-outline-success fw-bold" id="response_y" (click)="setResponse('Y')">
+              Sim &nbsp;<i class="fa-regular fa-thumbs-up"></i>
+           </button>   
+        </div>
+     </div>
+  </div>
+
+  <div class="row" *ngIf="this.checklistItemMov.type == 'A'">
+     <div class="col-4 m-0 p-1">
+        <div class="d-grid gap-2">
+           <button type="button" class="btn btn-outline-danger fw-bold" id="response_b" (click)="setResponse('B')">
+              Ruim &nbsp;<i class="fa-solid fa-face-tired"></i>
+           </button>   
+        </div>
+     </div>
+
+     <div class="col-4 m-0 p-1">
+        <div class="d-grid gap-2">
+           <button type="button" class="btn btn-outline-warning fw-bold" id="response_g" (click)="setResponse('G')">
+              Bom &nbsp;<i class="fa-solid fa-face-smile"></i>
+           </button>   
+        </div>
+     </div>
+
+     <div class="col-4 m-0 p-1">
+        <div class="d-grid gap-2">
+           <button type="button" class="btn btn-outline-success fw-bold" id="response_e" (click)="setResponse('E')">
+              Ótimo &nbsp;<i class="fa-solid fa-face-laugh-beam"></i>
+           </button>   
+        </div>
+     </div>
+  </div>
+
+  <div class="row mt-2" *ngIf="this.checklistItemMov.type_obs != 'N'">
+     <div class="col-12 m-0 p-1">
+        <ion-textarea 
+           labelPlacement="floating" 
+           fill="outline" 
+           maxlength="200" 
+           placeholder="Digite aqui sua observação"
+           [counter]="true" 
+           [autoGrow]="true"
+           [(ngModel)]="observation">
+           <div slot="label" *ngIf="this.checklistItemMov.type_obs == 'R'">
+              Observações <ion-text color="danger">(Obrigatório)</ion-text>
+           </div>
+           <div slot="label" *ngIf="this.checklistItemMov.type_obs == 'O'">Observações (Opcional)</div>
+        </ion-textarea>
+     </div>
+  </div>
+
+  <div class="row" *ngIf="this.checklistItemMov.required_photo =='S'">
+     <div class="col-12 m-0 p-1">
+        <div class="d-grid gap-2">
+           <button type="button" class="btn btn-dark fw-bold" (click)="getPhoto()" [disabled]="photos.length == checklistItemMov.quant_photo">
+              Tirar Foto &nbsp;<i class="fa-solid fa-camera"></i>
+           </button>   
+        </div>
+     </div>
+
+     <span class="text-primary fw-bold fs-12">
+        Fotos Obrigatórias: {{photos.length +"/"+ checklistItemMov.quant_photo}}
+        <hr class="mt-0"/>
+     </span>
+
+     <div class="row" *ngIf="photos.length > 0">
+        <div class="col-3 m-0 p-1" *ngFor="let photo of photos">
+           <img src="data:image/png;base64,{{photo}}" class="img-thumbnail m-0 p-1" />
+        </div>
+     </div>      
+  </div>
+
+</ion-content> 
+
+<ion-footer>
+  <ion-toolbar>
+     <div class="row mx-2">
+        <div class="col-6">
+        <ion-button expand="full" (click)="confirm()" color="success" [strong]="true">Salvar</ion-button>
+        </div>
+        <div class="col-6">
+        <ion-button expand="full" (click)="back()" color="danger" [strong]="true">Cancelar</ion-button>
+        </div>
+     </div>
+  </ion-toolbar>
+</ion-footer>
