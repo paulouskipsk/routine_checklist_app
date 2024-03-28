@@ -8,6 +8,8 @@ import { Constants } from 'src/app/models/utils/Constants';
 import { SessionService } from 'src/app/services/commons/SessionService';
 import { Router } from '@angular/router';
 import { ModalConfigServerPage } from '../modals/modal-config-server/modal-config-server.page';
+import { ModalSelectUnityPage } from '../modals/modal-select-unity/modal-select-unity.page';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
     selector: 'app-login',
@@ -17,6 +19,14 @@ import { ModalConfigServerPage } from '../modals/modal-config-server/modal-confi
 export class LoginPage implements OnInit {
     public form!: FormGroup;
     public version: string = Constants.version.description;
+    // private login: any = null;
+    // private password: any = null;
+    // private unity: any = null;
+    private data = {
+        login: '',
+        password: '',
+        unity: 0
+    };
 
     constructor(
         public formBuilder: FormBuilder,
@@ -24,7 +34,8 @@ export class LoginPage implements OnInit {
         private http: HttpService,
         private msgServ: MessagesService,
         private router: Router,
-        public modalCtrl: ModalController
+        public modalCtrl: ModalController,
+        private appComponent: AppComponent
     ) { 
         this.menuCtrl.enable(false);
     }
@@ -39,7 +50,6 @@ export class LoginPage implements OnInit {
             this.initializeFormControlValues();
             this.clearForm();
         }
-
     }
 
     protected initializeFormControlValues() {
@@ -57,22 +67,18 @@ export class LoginPage implements OnInit {
         });
     }
 
-    public async submit() {
-        let response: any;
-
-        let data = {
-            login: this.form.get('login')?.value,
-            password: this.form.get('password')?.value,
-        };
-
+    public async submitCredentials() {
         try {
-            this.clearForm();
+            
+            let response: any;
+            this.data.login = this.form.get('login')?.value
+            this.data.password = this.form.get('password')?.value
 
-            response = await this.http.post(Routes.PATH.AUTH, data);
-            SessionService.setSessionItem('token', response.payload.token);
-            this.router.navigate(['home']);
-            this.msgServ.toastInfo(response.message, 'success');
-            this.menuCtrl.enable(true);
+            response = await this.http.post(Routes.PATH.GET_USER_DATA_BY_CREDENTIALS, this.data);
+            let units = response.payload.units;
+            if(!units) throw 'O usuário não possui acesso a nenhuma unidade ativa.';
+
+            this.selectUnity(units);
         } catch (responseError : any) {
             let msg = responseError.message;
             if(responseError.status == 401){
@@ -80,10 +86,33 @@ export class LoginPage implements OnInit {
                 this.msgServ.toastInfo(msg, 'error', 10000);
             }if(responseError.status == 0){
                 this.msgServ.toastInfo("Erro ao efetuar login. "+ msg, 'error', 10000);
-            }else{
-                this.msgServ.toastInfo("Erro ao efetuar login. " + msg, 'error', 10000);
-            }            
+            }
         }
+        this.clearForm();
+    }
+
+    public async selectUnity(units: any){
+        const modalSelectUnityPage = await this.modalCtrl.create({
+            component: ModalSelectUnityPage,
+        });
+        modalSelectUnityPage.present();
+        const {data, role} = await modalSelectUnityPage.onWillDismiss();
+        this.data.unity = data;
+        this.authenticate();
+    }
+
+    private async authenticate(){
+        let response: any = await this.http.post(Routes.PATH.AUTH, this.data);
+        SessionService.setSessionItem('token', response.payload.token);
+        SessionService.setSessionItem('unityLogged', response.payload.unity);
+        SessionService.setSessionItem('userLogged', response.payload.user);
+
+        this.appComponent.setUser();
+        this.appComponent.setUnity();
+
+        this.router.navigate(['home']);
+        this.msgServ.toastInfo(response.message, 'success');
+        this.menuCtrl.enable(true);
     }
 
     public clearForm(){
@@ -101,4 +130,6 @@ export class LoginPage implements OnInit {
             modal.present();
         })        
     }
+
+
 }

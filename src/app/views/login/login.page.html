@@ -12,13 +12,13 @@
                                     <img src="assets/images/logo_linear.png"/>
                                 </div>
 
-                                <form class="form" autocomplete="off" [formGroup]="form" (ngSubmit)="submit()">
+                                <form class="form" autocomplete="off" [formGroup]="form" (ngSubmit)="submitCredentials()">
                                     <ion-list>
                                         <ion-item>
                                             <ion-input label="Login" labelPlacement="floating" placeholder="Informe o Login" formControlName="login"></ion-input>
                                         </ion-item>
                                         <ion-item>
-                                            <ion-input label="Senha" labelPlacement="floating" placeholder="Informe a senha" formControlName="password"></ion-input>
+                                            <ion-input type="password" label="Senha" labelPlacement="floating" placeholder="Informe a senha" formControlName="password"></ion-input>
                                         </ion-item>
                                     </ion-list>
 

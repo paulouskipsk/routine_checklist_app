@@ -5,6 +5,7 @@ export class Routes {
     public static PATH = {
         LOGIN: '/auth/login',
         AUTH: '/auth/authenticate',
+        GET_USER_DATA_BY_CREDENTIALS : '/auth/user-data-by-credentials',
         LOGOUT: '/auth/logout',
 
         GET_TASKS_BY_USER: '/checklistmov/by-user',

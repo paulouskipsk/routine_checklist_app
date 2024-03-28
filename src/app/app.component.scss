@@ -117,3 +117,23 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+.padding-data {
+  --inner-padding-bottom: 0;
+  --inner-padding-end: 0;
+  --inner-padding-start: 0;
+  --inner-padding-top: 0;
+  height: 0em;
+  margin: 0px;
+  display: flex;
+  font-size: 16px;
+}
+
+ion-menu::part(backdrop) {
+  background-color: rgba(12, 4, 114, 0.575);
+}
+
+ion-menu::part(container) {
+  border-radius: 0 20px 20px 0;
+  box-shadow: 4px 0px 16px rgba(19, 3, 110, 0.555);
+}

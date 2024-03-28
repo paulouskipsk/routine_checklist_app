@@ -1,11 +1,17 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>Checklist</ion-list-header>
-          <ion-note>TCC - UTFPR - TSI</ion-note>
+  <ion-split-pane contentId="main-content" >
+    <ion-menu contentId="main-content" type="overlay" >
+      <ion-list-header class="bg-routine-header py-1 mb-2"><h3>Routine Checklist</h3></ion-list-header>
 
+          <ion-note class="padding-data mt-2" *ngIf="user">Usuário: {{user?.id}} - {{user?.name}}</ion-note>
+          <ion-note class="padding-data mb-2 pb-3" *ngIf="unity">Unidade: {{("000"+unity?.id).slice(-3)}} - {{unity?.fantasy_name}}</ion-note>
+
+
+      <ion-content class="mt-3 p-0">
+        
+
+        <ion-list id="inbox-list">
+          
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>

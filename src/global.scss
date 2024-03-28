@@ -57,3 +57,9 @@
 .btn{
     border-radius: 0px !important;
 }
+
+.bg-routine-header{
+    background-color: linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);
+    --background:  linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);
+    color: white;
+}
