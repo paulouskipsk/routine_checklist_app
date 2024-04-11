@@ -32,3 +32,8 @@
     height: 100%;
     padding-top: 45%;
 }
+ 
+ion-segment-button, ion-badge {
+    font-size: 0.8em !important;
+    font-weight: bold;
+}

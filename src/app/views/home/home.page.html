@@ -4,43 +4,94 @@
           <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-item class="header-title" lines="none" class="bg-routine-header">
-          <ion-label class="fs-3 fw-bold">Tarefas Pendentes</ion-label>
+          <ion-label class="fs-3 fw-bold">Routine Checklist</ion-label>
       </ion-item>
   </ion-toolbar>
+
+  <ion-segment [(ngModel)]="selectedTab" >
+    <ion-segment-button color="tertiary" value="pending">
+      <ion-label>Pendentes  
+        <ion-badge color="tertiary" mode="ios">{{pendingTasks.length}}</ion-badge>
+      </ion-label>           
+    </ion-segment-button>
+
+    <ion-segment-button color="tertiary" value="my-tasks">
+      <ion-label>Minhas Tarefas  
+        <ion-badge color="tertiary" mode="ios">{{myTasks.length}}</ion-badge>
+      </ion-label>           
+    </ion-segment-button>
+
+  </ion-segment>
 </ion-header>
 
-<ion-content>
+<ion-content class="bg-light-gray">
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div *ngIf="pendingTasks.length == 0">
-    <h1 class="no-itens">Não há Checklists Pendentes</h1>
+  <!-- Tarefas Pendentes -->
+  <div *ngIf="selectedTab == 'pending'">
+    <div *ngIf="pendingTasks.length == 0">
+      <h1 class="no-itens">Não há Checklists Pendentes</h1>
+    </div>
+
+    <div class=".bg-img-chkl" *ngIf="pendingTasks.length > 0">
+      <div *ngFor="let checklistMov of pendingTasks">
+        <div class="card border text-left m-2 card-shadow" id="card-home" (click)="openTask(checklistMov)">
+          <div class="card-header border bg-purple fs-6 py-0 pt-1">
+            <div class="row">
+              <div class="col-6 text-start fs-12 fw-bold">CHECKLIST  {{ checklistMov.id }}</div>
+            </div>  
+          </div>
+
+          <div class="card-body pb-0 mb-0">
+            <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Descrição: </span>{{ checklistMov.description }}</p>
+            <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tot. Perguntas: </span>{{ checklistMov.total_questions }}</p>
+            <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tot. Perg. Respondidas: </span>{{ checklistMov.total_answered }}</p>
+            <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Percentual Concluído: </span>{{ checklistMov.percentage_processed }}%</p>
+          </div>
+
+          <div class="card-footer text-muted border-secondary fs-11 fw-bold">
+            <ion-icon name="ellipse" color="dark" class="mt-1 ps-2" *ngIf="checklistMov.time_left <= 0"></ion-icon>
+            <ion-icon name="ellipse" color="danger" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 0 && checklistMov.time_left <= 6"></ion-icon>
+            <ion-icon name="ellipse" color="warning" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 6 && checklistMov.time_left <= 12"></ion-icon>
+            <ion-icon name="ellipse" color="success" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 12"></ion-icon>
+              {{ "Faltam "+ getTimeLeftText(checklistMov.time_left) +" para o fechamento da tarefa"}}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class=".bg-img-chkl" *ngIf="pendingTasks.length > 0">
-    <div *ngFor="let checklistMov of pendingTasks">
-      <div class="card border text-left m-2 mt-3 card-shadow" id="card-home" (click)="openTask(checklistMov)">
-        <div class="card-header border bg-gray fs-6 fw-bold py-0 pt-1">
-          <div class="row">
-            <div class="col-6 text-start fs-12 text-primary">CHECKLIST</div>
-          </div>  
-        </div>
+  <!-- Minhas Tarefas -->
+  <div *ngIf="selectedTab == 'my-tasks'">
+    <div *ngIf="myTasks.length == 0">
+      <h1 class="no-itens">Não há Checklists Pendentes</h1>
+    </div>
 
-        <div class="card-body pb-0 mb-0">
-          <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tarefa:</span> {{ checklistMov.id }} </p>
-          <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Descrição: </span>{{ checklistMov.description }}</p>
-          <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tot. Perguntas: </span>{{ checklistMov.total_questions }}</p>
-          <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tot. Perg. Respondidas: </span>{{ checklistMov.total_answered }}</p>
-          <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Percentual Concluído: </span>{{ checklistMov.percentage_processed }}%</p>
-        </div>
+    <div class=".bg-img-chkl" *ngIf="myTasks.length > 0">
+      <div *ngFor="let checklistMov of myTasks">
+        <div class="card border text-left m-2 card-shadow" id="card-home" (click)="openTask(checklistMov)">
+          <div class="card-header border bg-purple fs-6 py-0 pt-1">
+            <div class="row">
+              <div class="col-6 text-start fs-12 fw-bold">CHECKLIST  {{ checklistMov.id }}</div>
+            </div>  
+          </div>
 
-        <div class="card-footer text-muted border-secondary fs-11 fw-bold">
-          <ion-icon name="ellipse" color="dark" class="mt-1 ps-2" *ngIf="checklistMov.time_left <= 0"></ion-icon>
-          <ion-icon name="ellipse" color="danger" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 0 && checklistMov.time_left <= 6"></ion-icon>
-          <ion-icon name="ellipse" color="warning" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 6 && checklistMov.time_left <= 12"></ion-icon>
-          <ion-icon name="ellipse" color="success" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 12"></ion-icon>
-            {{ "Faltam "+ getTimeLeftText(checklistMov.time_left) +" para fechamento da tarefa"}}
+          <div class="card-body pb-0 mb-0">
+            <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Descrição: </span>{{ checklistMov.description }}</p>
+            <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tot. Perguntas: </span>{{ checklistMov.total_questions }}</p>
+            <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Tot. Perg. Respondidas: </span>{{ checklistMov.total_answered }}</p>
+            <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Percentual Concluído: </span>{{ checklistMov.percentage_processed }}%</p>
+          </div>
+
+          <div class="card-footer text-muted border-secondary fs-11 fw-bold">
+            <ion-icon name="ellipse" color="dark" class="mt-1 ps-2" *ngIf="checklistMov.time_left <= 0"></ion-icon>
+            <ion-icon name="ellipse" color="danger" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 0 && checklistMov.time_left <= 6"></ion-icon>
+            <ion-icon name="ellipse" color="warning" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 6 && checklistMov.time_left <= 12"></ion-icon>
+            <ion-icon name="ellipse" color="success" class="mt-1 ps-2" *ngIf="checklistMov.time_left > 12"></ion-icon>
+              {{ "Faltam "+ getTimeLeftText(checklistMov.time_left) +" para o fechamento da tarefa"}}
+          </div>
         </div>
       </div>
     </div>

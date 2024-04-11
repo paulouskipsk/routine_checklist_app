@@ -3,6 +3,7 @@ import { HttpService } from 'src/app/services/commons/HttpService';
 import { StorageService } from 'src/app/services/commons/StorageService';
 import { Router } from '@angular/router';
 import { Routes } from 'src/app/models/utils/Routes';
+import { MessagesService } from 'src/app/services/commons/MessagesService';
 
 @Component({
    selector: 'app-tarefa-checklist',
@@ -18,7 +19,8 @@ export class TarefaChecklistPage implements OnInit {
 
    constructor(
       private http: HttpService,
-      private router: Router
+      private router: Router,
+      private msgServ: MessagesService
    ) {     
       this.chmvId = StorageService.getAndRemoveSessionItem('checklistMovId');     
    }
@@ -47,7 +49,9 @@ export class TarefaChecklistPage implements OnInit {
             this.sectors.push("Todos");
             this.sectorSelected = "Todos";
             this.checklistItensMovs.forEach((checklistItemMov: any) => {
-               this.sectors.push(checklistItemMov.sector.description);
+               if(checklistItemMov.sector){
+                  this.sectors.push(checklistItemMov.sector.description);
+               }
             });
          }
       } catch (error) {
@@ -65,13 +69,33 @@ export class TarefaChecklistPage implements OnInit {
    public async questionPage(checklistItemMov:any){
       StorageService.setSessionItem('checklistItemMov', checklistItemMov);
       this.router.navigateByUrl('checklist-question');
-      
-      // let configServerPage = await this.modalCtrl.create({
-      //     component: ResponseChecklistPage,
-      //     backdropDismiss: false,
-      //     cssClass: 'fullscreen'
-      // }).then(modal => {
-      //     modal.present();
-      // });
+   }
+
+   public disassociateChecklistmov(checklistMov: any){
+      try {
+
+         this.msgServ.confirmAction(`Confirma a liberação da tarefa ${checklistMov.id}?`)
+         .then(resolv => {
+            if(resolv){
+               let response = this.http.put(Routes.PATH.DISASSOCIATE_MOV,{checklistMovId: checklistMov.id});
+               console.log(response);
+               response.then((response: any) => {
+                  this.msgServ.toastInfo(response?.message, 'success');
+                  this.router.navigateByUrl('/home');
+               }).catch((e: any) => {
+                  this.msgServ.toastInfo(e?.error?.message, 'danger');
+               })
+               
+            }
+         }).catch(e =>{
+            this.msgServ.toastInfo(e, 'danger');
+         })
+
+
+
+         
+      } catch (e: any) {
+         this.msgServ.toastInfo(e?.error?.message, 'danger');
+      }
    }
 }

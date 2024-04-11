@@ -10,6 +10,8 @@ export class Routes {
 
         GET_TASKS_BY_USER: '/checklistmov/by-user',
         GET_CHECKLIST_MOV: '/checklistmov/with-itens',
+        ASSOCIATE_MOV: '/checklistmov/associate-checklistmov',
+        DISASSOCIATE_MOV:'/checklistmov/disassociate-checklistmov',
 
         GET_CHECKLIST_ITENS_MOVS: '/checklistitemmov/by-checklistmov',
         UPDATE_ITEM_CHECKLIST_MOV: '/checklistitemmov'

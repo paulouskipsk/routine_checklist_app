@@ -26,7 +26,7 @@ export class HttpService {
             this.apiAddress = `${apiData.protocol}://${apiData.ip}`;
             this.apiAddress += apiData.port ? `:${apiData.port}/api` : '/api';
         }else{
-            msgServ.toastInfo('Endereço da API não foi informado. Verifique!', 'error');
+            msgServ.toastInfo('Endereço da API não foi informado. Verifique!', 'danger');
             this.configServer();
         }
     }
@@ -66,13 +66,16 @@ export class HttpService {
                     'Authorization': "Bearer "+this.getToken()
                 })
             };
-           // data = JSON.stringify(data);
 
-            data = JSON.stringify(Object.fromEntries(data))            
-            
-            
+            let payload: any;
+            if(data instanceof Map){
+                payload = JSON.stringify(Object.fromEntries(data));
+            }else{
+                payload = data;
+            }
+                                 
             return new Promise((resolve, reject) => {
-                this.http.put(this.apiAddress + route, data, options).subscribe(data => {
+                this.http.put(this.apiAddress + route, payload, options).subscribe(data => {
                     resolve(data);
                 }, err => {
                     reject(err);

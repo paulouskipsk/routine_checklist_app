@@ -20,7 +20,7 @@ import { StorageService } from './services/commons/StorageService';
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     HttpService,

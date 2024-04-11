@@ -5,6 +5,7 @@ import { MenuController, Platform } from '@ionic/angular';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { StatusBar } from '@capacitor/status-bar';
 import { Observable } from 'rxjs';
+import { Constants } from './models/utils/Constants';
 
 @Component({
     selector: 'app-root',
@@ -14,6 +15,7 @@ import { Observable } from 'rxjs';
 export class AppComponent {
     public user : any;
     public unity : any;
+    public version: string;
 
     public setUser(){ this.user = SessionService.getSessionItem('userLogged'); }
     public setUnity(){ this.unity = SessionService.getSessionItem('unityLogged'); }
@@ -32,7 +34,7 @@ export class AppComponent {
         StatusBar.setBackgroundColor({
             color: "#250452"
         });
-
+        this.version = Constants.version.description;
         this.menuCtrl.enable(false);
        this.initializeApp();
     }

@@ -124,9 +124,9 @@ ion-item.selected {
   --inner-padding-start: 0;
   --inner-padding-top: 0;
   height: 0em;
-  margin: 0px;
+  margin: 5px 0 17px 0 !important;
   display: flex;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 ion-menu::part(backdrop) {
@@ -136,4 +136,9 @@ ion-menu::part(backdrop) {
 ion-menu::part(container) {
   border-radius: 0 20px 20px 0;
   box-shadow: 4px 0px 16px rgba(19, 3, 110, 0.555);
+}
+
+
+ion-content{
+  --ion-background-color: white !important;
 }

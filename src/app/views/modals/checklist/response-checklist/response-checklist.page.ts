@@ -21,7 +21,6 @@ export class ResponseChecklistPage implements OnInit {
 
    constructor(private router: Router, private msgServ: MessagesService, private http: HttpService) {
       this.checklistItemMov = StorageService.getAndRemoveSessionItem('checklistItemMov');
-      console.log(this.checklistItemMov);
    }
 
    ngOnInit() {
@@ -155,9 +154,9 @@ export class ResponseChecklistPage implements OnInit {
       } catch (e: any) {
          let msg = '';
          e?.error?.errors.forEach((element: any) => {
-            msg+= element + " | ";
+            msg+= element + "\n";
          });
-         this.msgServ.toastInfo(msg, 'error', 10000)
+         this.msgServ.toastInfo(msg, 'success', 10000)
       }
    }
 }

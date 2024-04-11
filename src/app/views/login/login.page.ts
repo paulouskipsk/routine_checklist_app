@@ -83,9 +83,9 @@ export class LoginPage implements OnInit {
             let msg = responseError.message;
             if(responseError.status == 401){
                 msg = responseError.error ? responseError.error.message : responseError;
-                this.msgServ.toastInfo(msg, 'error', 10000);
+                this.msgServ.toastInfo(msg, 'danger', 10000);
             }if(responseError.status == 0){
-                this.msgServ.toastInfo("Erro ao efetuar login. "+ msg, 'error', 10000);
+                this.msgServ.toastInfo("Erro ao efetuar login. "+ msg, 'danger', 10000);
             }
         }
         this.clearForm();

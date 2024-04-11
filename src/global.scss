@@ -25,8 +25,90 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+// Personalização de componentes de mensagem
+// Confirm Alert
+.alert-wrapper {
+    --width: 95% !important;
+    width: 95% !important;
+}
+
+.md button.alert-button {
+    border-radius: 0px;
+    font-weight: bold;
+    height: 3.5vh;
+    padding: 3px 20px !important;
+}
+
+.alert-head {
+    font-size: 25px !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    font-weight: bold !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.alert-button-group {
+    justify-content: center !important;
+}
+
+button.alert-button.alert-button-confirm {
+    background-color: var(--ion-color-success);
+    color: var(--ion-color-success-contrast);
+}
+
+button.alert-button.alert-button-cancel {
+    background-color: var(--ion-color-danger);
+    color: var(--ion-color-danger-contrast);
+}
+
+// Toast
+ion-toast::part(icon) {
+    font-size: 1.9em !important; 
+    font-weight: bold !important;
+}
+
+ion-toast::part(button) {
+    height: auto;
+    width: auto;
+    font-size: 1.5em !important;
+    font-weight: bold !important;
+}
+
+.line-break{
+    --white-space: pre-wrap;
+}
+
+// Backgrounds Personalizados
+.bg-routine-header{
+    background-color: linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);
+    --background:  linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);
+    color: white;
+}
+
+.bg-white{
+    background-color: white !important;
+    --background: white !important;
+}
+
+.bg-purple{
+    background-color: rgba(53,5,117,1) !important;
+    --background: rgba(53,5,117,1) !important;
+    color: white;
+}
+
 .bg-gray{
-    background-color: rgba(219, 217, 217, 0.897);
+    background-color: rgba(197, 196, 196, 0.897) !important;
+    --background: rgba(197, 196, 196, 0.897) !important;
+}
+
+.bg-dark-gray{
+    background-color: rgba(168, 166, 166, 0.897) !important;
+    --background: rgba(168, 166, 166, 0.897) !important;
+}
+
+.bg-light-gray{
+    background-color: rgba(224, 223, 223, 0.897) !important;
+    --background: rgba(224, 223, 223, 0.897) !important;
 }
 
 .btn-micro{
@@ -56,10 +138,4 @@
 
 .btn{
     border-radius: 0px !important;
-}
-
-.bg-routine-header{
-    background-color: linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);
-    --background:  linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);
-    color: white;
 }

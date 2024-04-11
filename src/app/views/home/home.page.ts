@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Routes } from 'src/app/models/utils/Routes';
 import { HttpService } from 'src/app/services/commons/HttpService';
+import { MessagesService } from 'src/app/services/commons/MessagesService';
 import { StorageService } from 'src/app/services/commons/StorageService';
 
 @Component({
@@ -11,10 +12,13 @@ import { StorageService } from 'src/app/services/commons/StorageService';
 })
 export class HomePage implements OnInit {
    public pendingTasks: any = new Array();
+   public myTasks: any = new Array();
+   public selectedTab: string = "pending";
 
    constructor(
       private http: HttpService,
-      private router: Router
+      private router: Router,
+      private msgServ: MessagesService
    ) { }
 
    ngOnInit() { }
@@ -35,22 +39,34 @@ export class HomePage implements OnInit {
          let data: Map<any, any> = new Map();
          data.set('unity_id', 1);
          let response:any = await this.http.get(Routes.PATH.GET_TASKS_BY_USER, data);
-         this.pendingTasks = response?.payload?.checklistsMovs
+         this.pendingTasks = response?.payload?.freeChecklistsMovs
+         this.myTasks = response?.payload?.userChecklistsMovs
+         
          if(this.pendingTasks == null || this.pendingTasks == '')
             this.pendingTasks = new Array();
          else{
-            let now = new Date();
-            this.pendingTasks.forEach((checklistMov:any) => {
-               let endDate = new Date(checklistMov.end_date);
-               let timeDiff = endDate.getTime() - now.getTime();
-               let diff = Math.ceil(timeDiff / (1000 * 60)); 
-               checklistMov['time_left'] = diff;
-            });
+            this.setTimeLeftInTask(this.pendingTasks);
+         }
+
+         if(this.myTasks == null || this.myTasks == '')
+            this.myTasks = new Array();
+         else{
+            this.setTimeLeftInTask(this.myTasks);
          }
       } catch (error) {
-
+         throw error;
       }
 
+   }
+
+   private setTimeLeftInTask(tasks:any){
+      let now = new Date();
+      tasks.forEach((checklistMov:any) => {
+         let endDate = new Date(checklistMov.end_date);
+         let timeDiff = endDate.getTime() - now.getTime();
+         let diff = Math.ceil(timeDiff / (1000 * 60)); 
+         checklistMov['time_left'] = diff;
+      });
    }
 
    public getTimeLeftText(minutes: number){
@@ -59,13 +75,32 @@ export class HomePage implements OnInit {
          text += `${Math.floor(minutes / 60).toString()}h`;
          minutes = minutes % 60;
       }
-      if(Math.abs(minutes) < 60 ) text += `${Math.abs(minutes)}min`;
+      if(Math.abs(minutes) < 60 ) text += `${Math.abs(minutes)}`;
       return text;
    }
 
-   public openTask(checklistMov: any){
-      console.log("HOME  "+checklistMov.id)
-      StorageService.setSessionItem('checklistMovId', checklistMov.id);
+   public async openTask(checklistMov: any){
+      try {
+         
+         if(checklistMov.is_free == 'S'){
+            await this.msgServ.confirmAction(`Tem certeza que deseja assumir a tarefa ${checklistMov.id}?`)
+            .then(async executeTask => {
+               if (executeTask) {
+                  let response:any = await this.http.put(Routes.PATH.ASSOCIATE_MOV, {checklistMovId: checklistMov.id});
+                  this.msgServ.toastInfo(response?.message, 'success');
+                  this.executeTask(checklistMov.id);                 
+               }
+            });
+         }else{
+            this.executeTask(checklistMov.id);
+         }
+      } catch (e: any) {
+         this.msgServ.toastInfo(e?.error?.message, 'danger');
+      }
+   }
+
+   private executeTask(checklistMovId: number){
+      StorageService.setSessionItem('checklistMovId', checklistMovId);
       this.router.navigate(['tarefa-checklist']);
    }
 

@@ -22,7 +22,6 @@ export class AuthGuard implements CanActivate {
   }
 
   private routeToLogin(): boolean {
-    //this.msgServ.toastInfo('Faça login para acessar o APP.', 'error');
     this.navCtrl.navigateRoot('/login');
     return false;
   }

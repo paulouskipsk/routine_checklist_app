@@ -3,6 +3,7 @@
       <ion-buttons slot="start">
          <ion-menu-button></ion-menu-button>
       </ion-buttons>
+
       <ion-item class="header-title" lines="none" color="tertiary">
          <ion-label class="fs-3 fw-bold">Tarefa: {{checklistMov.id +" - "+ checklistMov.description}}</ion-label>
       </ion-item>
@@ -15,19 +16,25 @@
    </ion-refresher>
 
    <div class="row mb-3 p-2 card-shadow">
-      <div class="col-12">
-         <div class="input-group">
-            <label class="input-group-text fw-bold" for="inputGroupSelect01">Filtrar por Setor: </label>
+      <div class="col-8 mr-0 pr-0">
+         <div class="input-group mt-1">
+            <label class="input-group-text fw-bold" for="inputGroupSelect01">Filtrar Setor: </label>
             <select class="form-select text-primary fw-bold" [(ngModel)]="sectorSelected">
               <option value="{{sector}}" *ngFor="let sector of sectors">{{sector}}</option>
             </select>
           </div>
       </div>
+      <div class="col-4 ml-0 pl-0 fw-bold">
+         <ion-button expand="block" color ="light" (click)="disassociateChecklistmov(checklistMov)">
+            <ion-icon slot="start" name="close-outline" size="small"></ion-icon>
+            <ion-label class="ml-2">Liberar</ion-label>
+         </ion-button>
+      </div>
    </div>
 
    <div *ngFor="let checklistItemMov of checklistItensMovs">
       <div class="card border m-2 p-0 card-shadow" (click)="questionPage(checklistItemMov)" 
-            *ngIf="sectorSelected == 'Todos' || (sectorSelected.length > 0 && sectorSelected == checklistItemMov.sector.description)">
+            *ngIf="sectorSelected == 'Todos' || (sectorSelected.length > 0 && sectorSelected == checklistItemMov.sector?.description)">
          <div class="card-body p-0 border">
 
             <div class="m-0 px-2 fs-15">
@@ -37,7 +44,7 @@
                <span class="fw-bold">Sequência : </span>{{("000"+checklistItemMov.sequence).slice(-3)}}
             </div>
             <div class="m-0 p-0 px-2 fs-15">
-               <span class="fw-bold">Setor: </span>{{checklistItemMov.sector.description}}
+               <span class="fw-bold">Setor: </span>{{checklistItemMov.sector?.description}}
             </div>
 
          </div>

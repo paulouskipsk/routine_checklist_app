@@ -20,7 +20,6 @@ export class ChecklistQuestionPage implements OnInit {
 
    constructor(private router: Router, private msgServ: MessagesService, private http: HttpService) {
       this.checklistItemMov = StorageService.getAndRemoveSessionItem('checklistItemMov');
-      console.log(this.checklistItemMov);
    }
 
    ngOnInit() {
@@ -119,37 +118,46 @@ export class ChecklistQuestionPage implements OnInit {
    }
 
    public async submit() {
-      let obj: Map<String, any> = new Map();
-      obj.set('id', this.checklistItemMov.id);
-
-      if (this.checklistItemMov.required_photo == 'S') {
-         obj.set('photos', this.photos);
-      } else {
-         obj.set('photos', null);
-      }
-
-      if (this.response != '' && this.response != null && this.response != 'undefined') {
-         obj.set('response', this.response);
-      }else throw 'Resposta não fornecida';
-
-      if (this.checklistItemMov.type_obs == 'R') {
-         if (this.observation != '' && this.observation != null && this.observation != 'undefined') {
-            obj.set('observation', this.observation);
-         } else throw 'Observação não fornecida';
-      } else if (this.checklistItemMov.type_obs == 'O') {
-         if (this.observation != '' && this.observation != null && this.observation != 'undefined') {
-            obj.set('observation', this.observation);
-         }
-      } else {
-         obj.set('observation', null);
-      }
+      let errors = [];
       try {
-         //const result = Object.fromEntries(obj);
+         let obj: Map<String, any> = new Map();
+         obj.set('id', this.checklistItemMov.id);       
+   
+         if (this.response != '' && this.response != null && this.response != 'undefined') {
+            obj.set('response', this.response);
+         }else {
+            errors.push('Resposta não fornecida');
+         }
+
+         if (this.checklistItemMov.required_photo == 'S') {
+            if(this.photos.length >= this.checklistItemMov.quant_photo)
+               obj.set('photos', this.photos);
+            else {
+               errors.push('Quantidade de fotos informado menor que o exigido.');
+            }
+         } else {
+            obj.set('photos', this.photos);
+         }
+   
+         obj.set('observation', null);
+         if (this.checklistItemMov.type_obs == 'R') {
+            if (this.observation != '' && this.observation != null && this.observation != 'undefined') {
+               obj.set('observation', this.observation);
+            } else {
+               errors.push('Observação obrigatória não fornecida.');
+            }
+         } else if (this.checklistItemMov.type_obs == 'O') {
+            if (this.observation != '' && this.observation != null && this.observation != 'undefined') {
+               obj.set('observation', this.observation);
+            }
+         }
+
+         if(errors.length > 0) throw 'Erros no formulário foram encontrados';
          let response: any = await this.http.put(Routes.PATH.UPDATE_ITEM_CHECKLIST_MOV + "/" + this.checklistItemMov.id, obj);
          this.checklistItemMov = response?.payload?.checklistItemMov;
 
          if(response.status_code == 201){            
-            this.msgServ.toastInfo(response?.message, 'success', 6000);
+            this.msgServ.toastInfo(response?.message, 'success');
             this.router.navigateByUrl('home');
          }else{
             this.msgServ.toastInfo(response?.message, 'success');
@@ -157,10 +165,20 @@ export class ChecklistQuestionPage implements OnInit {
          }
       } catch (e: any) {
          let msg = '';
-         e?.error?.errors.forEach((element: any) => {
-            msg += element + " | ";
-         });
-         this.msgServ.toastInfo(msg, 'error', 10000)
+         if(e.error){
+            e?.error?.errors.forEach((element: any) => {
+               msg += element + "\n";
+            });
+
+            this.msgServ.toastInfo(msg, 'danger', 8000)
+         }else{
+            msg = '';
+           errors.forEach(element => {
+            msg += element+"\n";
+           });
+           this.msgServ.toastInfo(msg, 'danger', 8000)
+         }
+         
       }
    }
 }
