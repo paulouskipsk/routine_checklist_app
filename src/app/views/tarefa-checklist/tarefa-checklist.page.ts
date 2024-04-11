@@ -50,7 +50,8 @@ export class TarefaChecklistPage implements OnInit {
             this.sectorSelected = "Todos";
             this.checklistItensMovs.forEach((checklistItemMov: any) => {
                if(checklistItemMov.sector){
-                  this.sectors.push(checklistItemMov.sector.description);
+                  if(!this.sectors.find(e => e === checklistItemMov.sector.description))
+                     this.sectors.push(checklistItemMov.sector.description);
                }
             });
          }

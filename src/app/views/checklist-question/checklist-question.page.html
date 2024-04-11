@@ -1,14 +1,26 @@
-<ion-header >
-  <ion-toolbar class="toolbar">
-     <ion-title class="fw-bold">{{"Tarefa: " + this.checklistItemMov.chmv_id + ", Pergunta Cod.: " + this.checklistItemMov.id }}</ion-title>    
+<ion-header>
+   <ion-toolbar id="main-menu" class="bg-routine-header">
+      <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-item class="header-title" lines="none" class="bg-routine-header">
+          <ion-label class="fs-0 fw-bold">{{"Tarefa: " + this.checklistItemMov.chmv_id + ", Pergunta Cod.: " + this.checklistItemMov.id }}</ion-label>
+      </ion-item>
   </ion-toolbar>
+
+  <ion-breadcrumbs [maxItems]="5" mode="ios">
+   <ion-breadcrumb href="/home">
+      <ion-icon name="home-sharp" class="breadcrumb-icon"></ion-icon>
+    </ion-breadcrumb>
+   <ion-breadcrumb>Tarefa</ion-breadcrumb>
+   <ion-breadcrumb>Responder Questão</ion-breadcrumb>
+ </ion-breadcrumbs>
 </ion-header>
 
 <ion-content class="ion-padding modal-fullscreen" >
-
   <div>
-     <span class="text-primary fw-bold fs-17">{{"Descr. pergunta " + ("000" + this.checklistItemMov.sequence).slice(-3) + ": "}}</span>
-     <span class="text-dark fw-normal fs-17">{{this.checklistItemMov.description }}</span>      
+     <span class="text-primary fw-bold fs-17">{{" Cod " + this.checklistItemMov.id  + " - Pergunta " + ("000" + this.checklistItemMov.sequence).slice(-3) +": "}}</span>
+     <p class="text-dark fw-normal fs-17">{{this.checklistItemMov.description }}</p>      
   </div>
   <hr/>
 

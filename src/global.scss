@@ -78,6 +78,31 @@ ion-toast::part(button) {
     --white-space: pre-wrap;
 }
 
+// BREAKCRUMBS
+ion-breadcrumbs {
+    border-bottom: 1px solid rgb(187, 151, 253);
+}
+ion-breadcrumb {
+    --color: rgb(51, 103, 199);
+    --color-active: rgb(95, 57, 167);
+    --color-hover: rgb(103, 61, 180);
+    height: 15px;
+    margin: 3px 0px;
+    font-size: 12px;
+  }
+
+.breadcrumb-native {
+    padding-inline: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.breadcrumb-icon {
+    font-size: 12px;
+    color: rgb(14, 60, 146);
+    font-weight: bold;
+}
+
 // Backgrounds Personalizados
 .bg-routine-header{
     background-color: linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);

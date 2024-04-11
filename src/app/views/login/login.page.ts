@@ -102,17 +102,21 @@ export class LoginPage implements OnInit {
     }
 
     private async authenticate(){
-        let response: any = await this.http.post(Routes.PATH.AUTH, this.data);
-        SessionService.setSessionItem('token', response.payload.token);
-        SessionService.setSessionItem('unityLogged', response.payload.unity);
-        SessionService.setSessionItem('userLogged', response.payload.user);
-
-        this.appComponent.setUser();
-        this.appComponent.setUnity();
-
-        this.router.navigate(['home']);
-        this.msgServ.toastInfo(response.message, 'success');
-        this.menuCtrl.enable(true);
+        try {
+            let response: any = await this.http.post(Routes.PATH.AUTH, this.data);
+            SessionService.setSessionItem('token', response.payload.token);
+            SessionService.setSessionItem('unityLogged', response.payload.unity);
+            SessionService.setSessionItem('userLogged', response.payload.user);
+    
+            this.appComponent.setUser();
+            this.appComponent.setUnity();
+    
+            this.router.navigate(['home']);
+            this.msgServ.toastInfo(response.message, 'success');
+            this.menuCtrl.enable(true);
+        } catch (e: any) {
+            this.msgServ.toastInfo(e?.error?.message, 'danger');
+        }
     }
 
     public clearForm(){

@@ -4,20 +4,20 @@
           <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-item class="header-title" lines="none" class="bg-routine-header">
-          <ion-label class="fs-3 fw-bold">Routine Checklist</ion-label>
+          <ion-label class="fs-0 fw-bold">Routine Checklist</ion-label>
       </ion-item>
   </ion-toolbar>
 
-  <ion-segment [(ngModel)]="selectedTab" >
-    <ion-segment-button color="tertiary" value="pending">
+  <ion-segment [(ngModel)]="selectedTab" color="tertiary">
+    <ion-segment-button value="pending">
       <ion-label>Pendentes  
-        <ion-badge color="tertiary" mode="ios">{{pendingTasks.length}}</ion-badge>
+        <ion-badge mode="ios" color="tertiary">{{pendingTasks.length}}</ion-badge>
       </ion-label>           
     </ion-segment-button>
 
-    <ion-segment-button color="tertiary" value="my-tasks">
+    <ion-segment-button value="my-tasks" color="tertiary">
       <ion-label>Minhas Tarefas  
-        <ion-badge color="tertiary" mode="ios">{{myTasks.length}}</ion-badge>
+        <ion-badge mode="ios" color="tertiary">{{myTasks.length}}</ion-badge>
       </ion-label>           
     </ion-segment-button>
 
