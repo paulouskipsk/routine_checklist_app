@@ -6,6 +6,7 @@ import { AuthGuard } from './guards/auth/auth.guard';
 import { StatusBar } from '@capacitor/status-bar';
 import { Observable } from 'rxjs';
 import { Constants } from './models/utils/Constants';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 @Component({
     selector: 'app-root',
@@ -29,7 +30,7 @@ export class AppComponent {
         private router: Router, 
         private menuCtrl: MenuController, 
         private platform: Platform,
-        private authGuard: AuthGuard
+        private authGuard: AuthGuard,
     ) {
         StatusBar.setBackgroundColor({
             color: "#250452"
@@ -43,7 +44,11 @@ export class AppComponent {
         this.platform.ready().then(async () => {
             this.setUser();
             this.setUnity();
-            await this.authGuard.checkAuth() ? this.router.navigateByUrl('home'): this.router.navigateByUrl('splash');            
+            // await this.authGuard.checkAuth() ? this.router.navigateByUrl('home'): this.router.navigateByUrl('splash'); 
+            await SplashScreen.hide();      
+            if(await this.authGuard.checkAuth()) {
+                this.router.navigateByUrl('home');
+            }    
         });
     }
 
