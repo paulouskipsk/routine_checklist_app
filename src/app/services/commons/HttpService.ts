@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SessionService } from './SessionService';
 // import 'rxjs-compat/add/operator/map';
-import { MessagesService } from './MessagesService';
+import { UtilsService } from './UtilsService';
 import { ModalConfigServerPage } from 'src/app/views/modals/modal-config-server/modal-config-server.page';
 import { ModalController } from '@ionic/angular';
 import { StorageService } from './StorageService';
@@ -18,7 +18,7 @@ export class HttpService {
 
     constructor(
         private http: HttpClient, 
-        private msgServ: MessagesService,
+        private utilService: UtilsService,
         private modalCtrl: ModalController
     ) {
         let apiData = StorageService.getSessionItem('provider-routine');
@@ -26,7 +26,7 @@ export class HttpService {
             this.apiAddress = `${apiData.protocol}://${apiData.ip}`;
             this.apiAddress += apiData.port ? `:${apiData.port}/api` : '/api';
         }else{
-            msgServ.toastInfo('Endereço da API não foi informado. Verifique!', 'danger');
+            utilService.toastInfo('Endereço da API não foi informado. Verifique!', 'danger');
             this.configServer();
         }
     }

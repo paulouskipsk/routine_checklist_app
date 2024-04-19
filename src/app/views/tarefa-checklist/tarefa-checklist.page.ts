@@ -3,7 +3,7 @@ import { HttpService } from 'src/app/services/commons/HttpService';
 import { StorageService } from 'src/app/services/commons/StorageService';
 import { Router } from '@angular/router';
 import { Routes } from 'src/app/models/utils/Routes';
-import { MessagesService } from 'src/app/services/commons/MessagesService';
+import { UtilsService } from 'src/app/services/commons/UtilsService';
 
 @Component({
    selector: 'app-tarefa-checklist',
@@ -20,7 +20,7 @@ export class TarefaChecklistPage implements OnInit {
    constructor(
       private http: HttpService,
       private router: Router,
-      private msgServ: MessagesService
+      private utilService: UtilsService
    ) {     
       this.chmvId = StorageService.getAndRemoveSessionItem('checklistMovId');     
    }
@@ -32,6 +32,7 @@ export class TarefaChecklistPage implements OnInit {
    }
 
    private async getChecklistMov(){
+      this.utilService.loadingStart();
       let response: any = await this.http.get(Routes.PATH.GET_CHECKLIST_MOV +"/"+ this.chmvId);
       this.checklistMov = response?.payload.checklistMov;
       this.checklistItensMovs = this.checklistMov.checklist_itens_movs;
@@ -56,8 +57,8 @@ export class TarefaChecklistPage implements OnInit {
             });
          }
       } catch (error) {
-
       }
+      this.utilService.loaderDismiss();
    }
 
    handleRefresh(event:any) {
@@ -75,28 +76,24 @@ export class TarefaChecklistPage implements OnInit {
    public disassociateChecklistmov(checklistMov: any){
       try {
 
-         this.msgServ.confirmAction(`Confirma a liberação da tarefa ${checklistMov.id}?`)
-         .then(resolv => {
+         this.utilService.confirmAction(`Confirma a liberação da tarefa ${checklistMov.id}?`)
+         .then((resolv:any) => {
             if(resolv){
                let response = this.http.put(Routes.PATH.DISASSOCIATE_MOV,{checklistMovId: checklistMov.id});
                console.log(response);
                response.then((response: any) => {
-                  this.msgServ.toastInfo(response?.message, 'success');
+                  this.utilService.toastInfo(response?.message, 'success');
                   this.router.navigateByUrl('/home');
                }).catch((e: any) => {
-                  this.msgServ.toastInfo(e?.error?.message, 'danger');
+                  this.utilService.toastInfo(e?.error?.message, 'danger');
                })
                
             }
-         }).catch(e =>{
-            this.msgServ.toastInfo(e, 'danger');
+         }).catch((e: any) =>{
+            this.utilService.toastInfo(e, 'danger');
          })
-
-
-
-         
       } catch (e: any) {
-         this.msgServ.toastInfo(e?.error?.message, 'danger');
+         this.utilService.toastInfo(e?.error?.message, 'danger');
       }
    }
 }

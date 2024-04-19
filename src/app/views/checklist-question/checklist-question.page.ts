@@ -4,7 +4,7 @@ import { StorageService } from 'src/app/services/commons/StorageService';
 import { Camera, CameraDirection, CameraResultType, CameraSource } from '@capacitor/camera';
 import { HttpService } from 'src/app/services/commons/HttpService';
 import { Routes } from 'src/app/models/utils/Routes';
-import { MessagesService } from 'src/app/services/commons/MessagesService';
+import { UtilsService } from 'src/app/services/commons/UtilsService';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,7 +18,7 @@ export class ChecklistQuestionPage implements OnInit {
    public response: String = '';
    public observation: String = '';
 
-   constructor(private router: Router, private msgServ: MessagesService, private http: HttpService) {
+   constructor(private router: Router, private utilService: UtilsService, private http: HttpService) {
       this.checklistItemMov = StorageService.getAndRemoveSessionItem('checklistItemMov');
    }
 
@@ -27,10 +27,6 @@ export class ChecklistQuestionPage implements OnInit {
 
    back() {
       this.router.navigateByUrl('tarefa-checklist');
-   }
-
-   confirm() {
-      this.submit();
    }
 
    public setResponse(response: String) {
@@ -117,8 +113,14 @@ export class ChecklistQuestionPage implements OnInit {
       }
    }
 
+   public showPhoto(photo: String){
+      alert(photo)
+   }
+
    public async submit() {
       let errors = [];
+      let loading: any;
+
       try {
          let obj: Map<String, any> = new Map();
          obj.set('id', this.checklistItemMov.id);       
@@ -149,34 +151,43 @@ export class ChecklistQuestionPage implements OnInit {
          } else if (this.checklistItemMov.type_obs == 'O') {
             if (this.observation != '' && this.observation != null && this.observation != 'undefined') {
                obj.set('observation', this.observation);
-            }
+            } 
          }
 
-         if(errors.length > 0) throw 'Erros no formulário foram encontrados';
+         if(errors.length > 0) {
+            throw 'Erros no formulário foram encontrados';
+         }
+
+         loading = this.utilService.loadingStart('Salvando...');
+
          let response: any = await this.http.put(Routes.PATH.UPDATE_ITEM_CHECKLIST_MOV + "/" + this.checklistItemMov.id, obj);
          this.checklistItemMov = response?.payload?.checklistItemMov;
 
-         if(response.status_code == 201){            
-            this.msgServ.toastInfo(response?.message, 'success');
+         if(response.status_code == 201){      
+            this.utilService.loaderDismiss(loading);
+            this.utilService.toastInfo(response?.message, 'success');
             this.router.navigateByUrl('home');
          }else{
-            this.msgServ.toastInfo(response?.message, 'success');
+            this.utilService.loaderDismiss(loading);
+            this.utilService.toastInfo(response?.message, 'success');
             this.back();
          }
       } catch (e: any) {
+         this.utilService.loaderDismiss(loading);
+         
          let msg = '';
          if(e.error){
             e?.error?.errors.forEach((element: any) => {
                msg += element + "\n";
             });
 
-            this.msgServ.toastInfo(msg, 'danger', 8000)
+            this.utilService.toastInfo(msg, 'danger', 8000);
          }else{
             msg = '';
            errors.forEach(element => {
             msg += element+"\n";
            });
-           this.msgServ.toastInfo(msg, 'danger', 8000)
+           this.utilService.toastInfo(msg, 'danger', 8000);
          }
          
       }

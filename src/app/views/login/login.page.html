@@ -1,43 +1,83 @@
 <ion-content>
-    <div id="login-container">
-        <div class="row">
-            <div class="col-12 min-vh-100 w-100 d-flex flex-column justify-content-center ">
-                <!-- <div class="row">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-5 col-xl-4 mx-auto">                    -->
-                        
-                        <div class="card rounded login-wrap mx-auto">
-                            <div class="card-body">
-
-                                <div class="text-center logo-img" (click)="configServer()">
-                                    <img src="assets/images/logo_linear.png"/>
-                                </div>
-
-                                <form class="form" autocomplete="off" [formGroup]="form" (ngSubmit)="submitCredentials()">
-                                    <ion-list>
-                                        <ion-item>
-                                            <ion-input label="Login" labelPlacement="floating" placeholder="Informe o Login" formControlName="login"></ion-input>
-                                        </ion-item>
-                                        <ion-item>
-                                            <ion-input type="password" label="Senha" labelPlacement="floating" placeholder="Informe a senha" formControlName="password"></ion-input>
-                                        </ion-item>
-                                    </ion-list>
-
-                                    <ion-button type="submit" expand="full" color="success" class="mt-3" strong>
-                                        <ion-icon slot="start" name="log-in-outline"></ion-icon>
-                                        Entrar
-                                    </ion-button>                            
-                                </form>
-                            </div>
-                            <div class="version text-center text-primary fs-13">
-                                {{version}}
-                            </div>
-                        </div>
-
-                    <!-- </div>
-                </div> -->
-            </div>
+    <div class="header">
+        <div class="text-center logo-img" (click)="configServer()">
+            <img src="assets/images/logo_white.png"/>
         </div>
+
+        <!--Waves Container-->
+        <div>
+            <svg
+                class="waves"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 24 150 28"
+                preserveAspectRatio="none"
+                shape-rendering="auto"
+            >
+                <defs>
+                    <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/>
+                </defs>
+                <g class="parallax">
+                    <use
+                        xlink:href="#gentle-wave"
+                        x="48"
+                        y="0"
+                        fill="rgba(255,255,255,0.7"
+                    />
+                    <use
+                        xlink:href="#gentle-wave"
+                        x="48"
+                        y="3"
+                        fill="rgba(255,255,255,0.5)"
+                    />
+                    <use
+                        xlink:href="#gentle-wave"
+                        x="48"
+                        y="5"
+                        fill="rgba(255,255,255,0.3)"
+                    />
+                    <use
+                        xlink:href="#gentle-wave"
+                        x="48"
+                        y="7"
+                        fill="#fff"
+                    />
+                </g>
+            </svg>
+        </div>
+        <!--Waves end-->
+
     </div>
 
+    <div class="container pt-5">
+        <form class="form" autocomplete="true" [formGroup]="form" (ngSubmit)="submitCredentials()" (keyup.enter)="submitCredentials()">
+            <ion-item class="mt-5">
+                <ion-icon slot="start" name="person" aria-hidden="true" color="tertiary" class="icon-input"></ion-icon>
+                <ion-input labelPlacement="stacked" label="" placeholder="Login" formControlName="login"></ion-input>
+            </ion-item >
+
+            <ion-item class="mt-3 py-2">
+                <ion-icon slot="start" name="lock-closed" aria-hidden="true" color="tertiary" class="icon-input"></ion-icon>
+                <ion-input id="input-password" labelPlacement="stacked" label="" type="{{passwordTypeAttr}}" placeholder="Senha" formControlName="password"></ion-input>
+                <ion-button fill="clear" slot="end" aria-label="Show/hide">
+                    <span id="icon-password" class="{{iconPasswordColor}}">
+                        <ion-icon slot="icon-only" name="eye" aria-hidden="true" class="fs-5" (click)="showPassord()"></ion-icon>
+                    </span>
+                </ion-button>
+            </ion-item>
+
+            <div id="btn-submit" class="mt-3">
+                <ion-button type="submit" color="tertiary" class="mt-3">
+                    <ion-icon slot="start" name="checkmark-done-sharp"></ion-icon>
+                    Entrar
+                </ion-button>                            
+            </div>
+                    
+        </form>
+
+        <div class="text-center text-primary fs-13">
+            {{version}}
+        </div>
+    </div>
 
 </ion-content>

@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpService } from './services/commons/HttpService';
 import { Constants } from './models/utils/Constants';
 import { SessionService } from './services/commons/SessionService';
-import { MessagesService } from './services/commons/MessagesService';
+import { UtilsService } from './services/commons/UtilsService';
 import { Routes } from './models/utils/Routes';
 import { StorageService } from './services/commons/StorageService';
 
@@ -27,7 +27,7 @@ import { StorageService } from './services/commons/StorageService';
     Constants,
     SessionService,
     StorageService,
-    MessagesService,
+    UtilsService,
     Routes,
     { 
       provide: RouteReuseStrategy, 

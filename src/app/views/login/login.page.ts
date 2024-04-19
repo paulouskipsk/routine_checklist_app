@@ -3,13 +3,13 @@ import { MenuController, ModalController } from "@ionic/angular";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpService } from 'src/app/services/commons/HttpService';
 import { Routes } from 'src/app/models/utils/Routes';
-import { MessagesService } from 'src/app/services/commons/MessagesService';
 import { Constants } from 'src/app/models/utils/Constants';
 import { SessionService } from 'src/app/services/commons/SessionService';
 import { Router } from '@angular/router';
 import { ModalConfigServerPage } from '../modals/modal-config-server/modal-config-server.page';
 import { ModalSelectUnityPage } from '../modals/modal-select-unity/modal-select-unity.page';
 import { AppComponent } from 'src/app/app.component';
+import { UtilsService } from 'src/app/services/commons/UtilsService';
 
 @Component({
     selector: 'app-login',
@@ -19,9 +19,8 @@ import { AppComponent } from 'src/app/app.component';
 export class LoginPage implements OnInit {
     public form!: FormGroup;
     public version: string = Constants.version.description;
-    // private login: any = null;
-    // private password: any = null;
-    // private unity: any = null;
+    public passwordTypeAttr = 'password';
+    public iconPasswordColor = 'text-secondary';
     private data = {
         login: '',
         password: '',
@@ -32,10 +31,10 @@ export class LoginPage implements OnInit {
         public formBuilder: FormBuilder,
         public menuCtrl: MenuController,
         private http: HttpService,
-        private msgServ: MessagesService,
+        private utilService: UtilsService,
         private router: Router,
         public modalCtrl: ModalController,
-        private appComponent: AppComponent
+        private appComponent: AppComponent,
     ) { 
         this.menuCtrl.enable(false);
     }
@@ -43,7 +42,7 @@ export class LoginPage implements OnInit {
     ngOnInit() {
         if(SessionService.getSessionItem('token')){
             this.menuCtrl.enable(true);
-            this.msgServ.toastInfo('Você já está logado.', 'success');
+            this.utilService.toastInfo('Você já está logado.', 'success');
             this.router.navigate(['home']);
         }else{
             this.menuCtrl.enable(false);
@@ -69,7 +68,8 @@ export class LoginPage implements OnInit {
 
     public async submitCredentials() {
         try {
-            
+            this.utilService.loadingStart(); 
+
             let response: any;
             this.data.login = this.form.get('login')?.value
             this.data.password = this.form.get('password')?.value
@@ -77,16 +77,17 @@ export class LoginPage implements OnInit {
             response = await this.http.post(Routes.PATH.GET_USER_DATA_BY_CREDENTIALS, this.data);
             let units = response.payload.units;
             if(!units) throw 'O usuário não possui acesso a nenhuma unidade ativa.';
-
+            this.utilService.loaderDismiss();
             this.selectUnity(units);
         } catch (responseError : any) {
             let msg = responseError.message;
             if(responseError.status == 401){
                 msg = responseError.error ? responseError.error.message : responseError;
-                this.msgServ.toastInfo(msg, 'danger', 10000);
+                this.utilService.toastInfo(msg, 'danger', 10000);
             }if(responseError.status == 0){
-                this.msgServ.toastInfo("Erro ao efetuar login. "+ msg, 'danger', 10000);
+                this.utilService.toastInfo("Erro ao efetuar login. "+ msg, 'danger', 10000);
             }
+            this.utilService.loaderDismiss();
         }
         this.clearForm();
     }
@@ -103,19 +104,34 @@ export class LoginPage implements OnInit {
 
     private async authenticate(){
         try {
-            let response: any = await this.http.post(Routes.PATH.AUTH, this.data);
-            SessionService.setSessionItem('token', response.payload.token);
-            SessionService.setSessionItem('unityLogged', response.payload.unity);
-            SessionService.setSessionItem('userLogged', response.payload.user);
-    
-            this.appComponent.setUser();
-            this.appComponent.setUnity();
-    
-            this.router.navigate(['home']);
-            this.msgServ.toastInfo(response.message, 'success');
-            this.menuCtrl.enable(true);
+            this.utilService.loadingStart();
+            if(this.data.unity){
+                let response: any = await this.http.post(Routes.PATH.AUTH, this.data);
+                SessionService.setSessionItem('token', response.payload.token);
+                SessionService.setSessionItem('unityLogged', response.payload.unity);
+                SessionService.setSessionItem('userLogged', response.payload.user);
+        
+                this.appComponent.setUser();
+                this.appComponent.setUnity();
+        
+                this.router.navigate(['home']);
+                this.utilService.toastInfo(response.message, 'success');
+                this.menuCtrl.enable(true);
+                this.utilService.loaderDismiss();
+            }
         } catch (e: any) {
-            this.msgServ.toastInfo(e?.error?.message, 'danger');
+            this.utilService.loaderDismiss();
+            this.utilService.toastInfo(e?.error?.message, 'danger');
+        }
+    }
+
+    public showPassord(){
+        if(this.passwordTypeAttr == 'text'){
+            this.passwordTypeAttr = 'password';
+            this.iconPasswordColor = 'text-secondary';
+        } else{
+            this.passwordTypeAttr = 'text';
+            this.iconPasswordColor = 'text-purple';
         }
     }
 

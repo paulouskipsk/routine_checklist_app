@@ -25,6 +25,16 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+ion-loading.custom-loading {
+  .loading-wrapper {
+    background-size: 90px;
+    --min-width: 2rem;
+    height: 65px;
+    --spinner-color	: #8227f8;
+    color: #550db3;
+  }
+}
+
 // Personalização de componentes de mensagem
 // Confirm Alert
 .alert-wrapper {
@@ -80,32 +90,29 @@ ion-toast::part(button) {
 
 // BREAKCRUMBS
 ion-breadcrumbs {
-    border-bottom: 1px solid rgb(187, 151, 253);
+    border-bottom: 1px solid rgb(173, 173, 173);
 }
 ion-breadcrumb {
-    --color: rgb(51, 103, 199);
-    --color-active: rgb(95, 57, 167);
-    --color-hover: rgb(103, 61, 180);
+    --color: rgb(39, 39, 39);
+    --color-active: rgb(48, 39, 66);
+    --color-hover: rgb(78, 2, 219);
     height: 15px;
     margin: 3px 0px;
     font-size: 12px;
+    font-weight: bold !important;
   }
 
-.breadcrumb-native {
-    padding-inline: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
 .breadcrumb-icon {
-    font-size: 12px;
-    color: rgb(14, 60, 146);
-    font-weight: bold;
+    color: rgb(39, 39, 39);
 }
 
+.text-purple {
+    color: #5606be !important;
+    --color: #5606be !important;
+}
 // Backgrounds Personalizados
 .bg-routine-header{
-    background-color: linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);
+    background-color: linear-gradient(0deg, #6814de 0%, #350575 45%, #250452 100%);
     --background:  linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);
     color: white;
 }

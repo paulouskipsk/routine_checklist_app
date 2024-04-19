@@ -5,7 +5,7 @@ import { StorageService } from 'src/app/services/commons/StorageService';
 import { Camera, CameraDirection, CameraResultType, CameraSource } from '@capacitor/camera';
 import { HttpService } from 'src/app/services/commons/HttpService';
 import { Routes } from 'src/app/models/utils/Routes';
-import { MessagesService } from 'src/app/services/commons/MessagesService';
+import { UtilsService } from 'src/app/services/commons/UtilsService';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,7 +19,7 @@ export class ResponseChecklistPage implements OnInit {
    public response: String = '';
    public observation: String = '';
 
-   constructor(private router: Router, private msgServ: MessagesService, private http: HttpService) {
+   constructor(private router: Router, private utilService: UtilsService, private http: HttpService) {
       this.checklistItemMov = StorageService.getAndRemoveSessionItem('checklistItemMov');
    }
 
@@ -149,14 +149,14 @@ export class ResponseChecklistPage implements OnInit {
          let response:any = await this.http.put(Routes.PATH.UPDATE_ITEM_CHECKLIST_MOV+"/"+this.checklistItemMov.id, obj);
          this.checklistItemMov = response?.payload?.checklistItemMov;
 
-         this.msgServ.toastInfo(response?.message, 'success');
+         this.utilService.toastInfo(response?.message, 'success');
          this.cancel();
       } catch (e: any) {
          let msg = '';
          e?.error?.errors.forEach((element: any) => {
             msg+= element + "\n";
          });
-         this.msgServ.toastInfo(msg, 'success', 10000)
+         this.utilService.toastInfo(msg, 'success', 10000)
       }
    }
 }

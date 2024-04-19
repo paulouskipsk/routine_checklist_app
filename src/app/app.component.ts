@@ -23,7 +23,7 @@ export class AppComponent {
 
     public appPages = [
         { title: 'Home', url: '/home', icon: 'home' },
-        { title: 'Configurações', url: '/login', icon: 'construct' },
+        // { title: 'Configurações', url: '/login', icon: 'construct' },
     ];
 
     constructor(
@@ -44,8 +44,8 @@ export class AppComponent {
         this.platform.ready().then(async () => {
             this.setUser();
             this.setUnity();
-            // await this.authGuard.checkAuth() ? this.router.navigateByUrl('home'): this.router.navigateByUrl('splash'); 
-            await SplashScreen.hide();      
+
+            setTimeout(async () => { await SplashScreen.hide(); }, 2000);
             if(await this.authGuard.checkAuth()) {
                 this.router.navigateByUrl('home');
             }    

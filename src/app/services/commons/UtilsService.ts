@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Constants } from 'src/app/models/utils/Constants';
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class MessagesService {
+export class UtilsService {
+    private loading: any;
 
     constructor(
         private toastController: ToastController,
-        private alertController: AlertController
+        private alertController: AlertController,
+        private loadingCtrl: LoadingController,
+
     ){}
 
     public async toastInfo(message: string, typeMsg: string = 'info', duration: number = 4000) {
@@ -96,5 +99,27 @@ export class MessagesService {
             this.alertController.dismiss();
             await alert.present();
         });           
+    }
+
+    public async loadingStart(message: string = 'Carregando ...'){
+        this.loading = await this.loadingCtrl.create({
+            message: message,
+            cssClass: 'custom-loading',
+            spinner: 'bubbles',
+            mode:'ios'
+        });
+        
+        this.loading.present();
+        return this.loading;
+    }
+
+    public async loaderDismiss(loading: any = null){
+        if(loading == null)
+            this.loadingCtrl.dismiss();
+        else {
+            loading.then((resolv:any)=>{
+                resolv.dismiss();
+            });
+        }
     }
 }

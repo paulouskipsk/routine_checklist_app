@@ -19,8 +19,8 @@
 
 <ion-content class="ion-padding modal-fullscreen" >
   <div>
-     <span class="text-primary fw-bold fs-17">{{" Cod " + this.checklistItemMov.id  + " - Pergunta " + ("000" + this.checklistItemMov.sequence).slice(-3) +": "}}</span>
-     <p class="text-dark fw-normal fs-17">{{this.checklistItemMov.description }}</p>      
+     <span class="fw-bold fs-17">{{"Pergunta " + ("000" + this.checklistItemMov.sequence).slice(-3) +": "}}</span>
+     <span class="text-dark fw-normal fst-italic fs-17">{{this.checklistItemMov.description }}</span>      
   </div>
   <hr/>
 
@@ -94,14 +94,14 @@
         </div>
      </div>
 
-     <span class="text-primary fw-bold fs-12">
+     <span class="fw-bold fs-12">
         Fotos Obrigatórias: {{photos.length +"/"+ checklistItemMov.quant_photo}}
         <hr class="mt-0"/>
      </span>
 
      <div class="row" *ngIf="photos.length > 0">
         <div class="col-3 m-0 p-1" *ngFor="let photo of photos">
-           <img src="data:image/png;base64,{{photo}}" class="img-thumbnail m-0 p-1" />
+           <img src="data:image/png;base64,{{photo}}" class="img-thumbnail m-0 p-1" (click)="showPhoto(photo)"/>
         </div>
      </div>      
   </div>
@@ -112,11 +112,11 @@
   <ion-toolbar>
      <div class="row mx-2">
         <div class="col-6">
-        <ion-button expand="full" (click)="confirm()" color="success" [strong]="true">Salvar</ion-button>
-        </div>
-        <div class="col-6">
-        <ion-button expand="full" (click)="back()" color="danger" [strong]="true">Cancelar</ion-button>
-        </div>
+           <ion-button expand="full" (click)="back()" color="danger" [strong]="true">Cancelar</ion-button>
+         </div>
+         <div class="col-6">
+            <ion-button expand="full" (click)="submit()" color="success" [strong]="true">Salvar</ion-button>
+         </div>
      </div>
   </ion-toolbar>
 </ion-footer>

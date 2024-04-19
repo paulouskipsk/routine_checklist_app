@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Routes } from 'src/app/models/utils/Routes';
 import { HttpService } from 'src/app/services/commons/HttpService';
-import { MessagesService } from 'src/app/services/commons/MessagesService';
 import { StorageService } from 'src/app/services/commons/StorageService';
+import { UtilsService } from 'src/app/services/commons/UtilsService';
 
 @Component({
    selector: 'app-home',
@@ -18,7 +18,7 @@ export class HomePage implements OnInit {
    constructor(
       private http: HttpService,
       private router: Router,
-      private msgServ: MessagesService
+      private utilService: UtilsService
    ) { }
 
    ngOnInit() { }
@@ -36,6 +36,7 @@ export class HomePage implements OnInit {
 
    public async getPendingTasksForUser() {
       try {
+         this.utilService.loadingStart();
          let data: Map<any, any> = new Map();
          data.set('unity_id', 1);
          let response:any = await this.http.get(Routes.PATH.GET_TASKS_BY_USER, data);
@@ -53,6 +54,7 @@ export class HomePage implements OnInit {
          else{
             this.setTimeLeftInTask(this.myTasks);
          }
+         this.utilService.loaderDismiss();
       } catch (error) {
          throw error;
       }
@@ -81,13 +83,12 @@ export class HomePage implements OnInit {
 
    public async openTask(checklistMov: any){
       try {
-         
          if(checklistMov.is_free == 'S'){
-            await this.msgServ.confirmAction(`Tem certeza que deseja assumir a tarefa ${checklistMov.id}?`)
-            .then(async executeTask => {
+            await this.utilService.confirmAction(`Tem certeza que deseja assumir a tarefa ${checklistMov.id}?`)
+            .then(async (executeTask : any) => {
                if (executeTask) {
                   let response:any = await this.http.put(Routes.PATH.ASSOCIATE_MOV, {checklistMovId: checklistMov.id});
-                  this.msgServ.toastInfo(response?.message, 'success');
+                  this.utilService.toastInfo(response?.message, 'success');
                   this.executeTask(checklistMov.id);                 
                }
             });
@@ -95,7 +96,7 @@ export class HomePage implements OnInit {
             this.executeTask(checklistMov.id);
          }
       } catch (e: any) {
-         this.msgServ.toastInfo(e?.error?.message, 'danger');
+         this.utilService.toastInfo(e?.error?.message, 'danger');
       }
    }
 
