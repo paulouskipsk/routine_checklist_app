@@ -18,27 +18,27 @@ export class UtilsService {
 
     public async toastInfo(message: string, typeMsg: string = 'info', duration: number = 4000) {
         let color: string;
-        let icon: string;
+        let icon: string = '';
         switch (typeMsg) {
             case 'danger':
                 color = 'danger';
-                icon = 'thumbs-down-outline';
+                //icon = 'thumbs-down-outline';
                 break;
             case 'success':
                 color = 'success';
-                icon = 'thumbs-up-outline';
+                //icon = 'thumbs-up-outline';
                 break;
             case 'info':
                 color = 'secondary';
-                icon = 'information-circle-outline';
+                //icon = 'information-circle-outline';
                 break;
             case 'warning':
                 color = 'warning';
-                icon = 'hand-left-outline';
+                //icon = 'hand-left-outline';
                 break;
             default:
                 color = 'dark';
-                icon = 'help-outline';
+                //icon = 'help-outline';
                 break;
         }
         const toast = await this.toastController.create({
@@ -48,11 +48,11 @@ export class UtilsService {
             position: 'top',
             duration: duration,
             id: 'toast',
-            cssClass:"line-break fw-bold",
-            icon: icon,
+            cssClass:"line-break",
+            //icon: icon,
             buttons: [
                 {
-                    icon:'close-outline',
+                    icon:'close-sharp',
                     role: 'cancel',
                     handler: () => {},
                 },
@@ -64,7 +64,7 @@ export class UtilsService {
     }
 
     public async confirmAction(
-        message: string = 'Confirma?', 
+        message: any = 'Confirma?', 
         header: string = 'Confirmação', 
         confirmButtonText:string = 'Confirmar', 
         cancelButtonText:string = 'Cancelar',

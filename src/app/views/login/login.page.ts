@@ -17,6 +17,7 @@ import { UtilsService } from 'src/app/services/commons/UtilsService';
     styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+    private loading: any;
     public form!: FormGroup;
     public version: string = Constants.version.description;
     public passwordTypeAttr = 'password';
@@ -68,26 +69,27 @@ export class LoginPage implements OnInit {
 
     public async submitCredentials() {
         try {
-            this.utilService.loadingStart(); 
+            this.loading = this.utilService.loadingStart(); 
 
             let response: any;
             this.data.login = this.form.get('login')?.value
             this.data.password = this.form.get('password')?.value
 
             response = await this.http.post(Routes.PATH.GET_USER_DATA_BY_CREDENTIALS, this.data);
+            this.utilService.loaderDismiss(this.loading);
+
             let units = response.payload.units;
             if(!units) throw 'O usuário não possui acesso a nenhuma unidade ativa.';
-            this.utilService.loaderDismiss();
             this.selectUnity(units);
         } catch (responseError : any) {
             let msg = responseError.message;
+            this.utilService.loaderDismiss(this.loading);
             if(responseError.status == 401){
                 msg = responseError.error ? responseError.error.message : responseError;
                 this.utilService.toastInfo(msg, 'danger', 10000);
-            }if(responseError.status == 0){
+            }if(responseError.status == 400){
                 this.utilService.toastInfo("Erro ao efetuar login. "+ msg, 'danger', 10000);
             }
-            this.utilService.loaderDismiss();
         }
         this.clearForm();
     }
@@ -95,8 +97,10 @@ export class LoginPage implements OnInit {
     public async selectUnity(units: any){
         const modalSelectUnityPage = await this.modalCtrl.create({
             component: ModalSelectUnityPage,
+            componentProps: {units: units},
         });
         modalSelectUnityPage.present();
+
         const {data, role} = await modalSelectUnityPage.onWillDismiss();
         this.data.unity = data;
         this.authenticate();
@@ -104,8 +108,9 @@ export class LoginPage implements OnInit {
 
     private async authenticate(){
         try {
-            this.utilService.loadingStart();
             if(this.data.unity){
+                this.loading = this.utilService.loadingStart();
+                
                 let response: any = await this.http.post(Routes.PATH.AUTH, this.data);
                 SessionService.setSessionItem('token', response.payload.token);
                 SessionService.setSessionItem('unityLogged', response.payload.unity);
@@ -113,14 +118,14 @@ export class LoginPage implements OnInit {
         
                 this.appComponent.setUser();
                 this.appComponent.setUnity();
+                this.menuCtrl.enable(true);
+                this.utilService.loaderDismiss(this.loading);
         
                 this.router.navigate(['home']);
                 this.utilService.toastInfo(response.message, 'success');
-                this.menuCtrl.enable(true);
-                this.utilService.loaderDismiss();
             }
         } catch (e: any) {
-            this.utilService.loaderDismiss();
+            this.utilService.loaderDismiss(this.loading);
             this.utilService.toastInfo(e?.error?.message, 'danger');
         }
     }

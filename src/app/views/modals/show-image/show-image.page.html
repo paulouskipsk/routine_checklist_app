@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Tarefa {{checklistItemMov.chmv_id}}, Questão {{checklistItemMov.id}}</ion-title>
+    <ion-buttons [collapse]="true" slot="end">
+      <ion-button (click)="close()" color="primary">
+        Fechar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" >
+  <div class="row h-100">
+    <div class="col-12 d-flex justify-content-center align-self-center h-100">
+      <img src="data:image/png;base64,{{photo}}" class="img-fluid" data-zoom="1" data-angle="0" id="image-show">
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="row mx-3">
+      <div class="col-12">
+        <ion-range 
+          [min]="0" 
+          [max]="300" 
+          [value]="100"  
+          [pin]="true" 
+          [pinFormatter]="pinFormatter" 
+          (ionChange)="zoom($event)"
+        >
+        <div slot="label"><ion-text color="primary">ZOOM</ion-text></div>
+        <i slot="start" class="fa-solid fa-magnifying-glass-minus fs-5"></i>
+        <i slot="end" class="fa-solid fa-magnifying-glass-plus fs-5"></i>
+        </ion-range>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-footer>

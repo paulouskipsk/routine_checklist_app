@@ -1,6 +1,6 @@
 <ion-content>
     <div class="header">
-        <div class="text-center logo-img" (click)="configServer()">
+        <div class="text-center" (click)="configServer()" id="logo-img">
             <img src="assets/images/logo_white.png"/>
         </div>
 
@@ -49,16 +49,20 @@
 
     </div>
 
-    <div class="container pt-5">
+    <div class="container">
+        <div (click)="configServer()" id="logo-img2">
+            <img src="assets/images/routine_logo_purple.png"/>
+        </div>
+
         <form class="form" autocomplete="true" [formGroup]="form" (ngSubmit)="submitCredentials()" (keyup.enter)="submitCredentials()">
-            <ion-item class="mt-5">
+            <ion-item id="login">
                 <ion-icon slot="start" name="person" aria-hidden="true" color="tertiary" class="icon-input"></ion-icon>
-                <ion-input labelPlacement="stacked" label="" placeholder="Login" formControlName="login"></ion-input>
+                <ion-input labelPlacement="stacked" placeholder="Login" formControlName="login"></ion-input>
             </ion-item >
 
-            <ion-item class="mt-3 py-2">
+            <ion-item id="password">
                 <ion-icon slot="start" name="lock-closed" aria-hidden="true" color="tertiary" class="icon-input"></ion-icon>
-                <ion-input id="input-password" labelPlacement="stacked" label="" type="{{passwordTypeAttr}}" placeholder="Senha" formControlName="password"></ion-input>
+                <ion-input id="input-password" labelPlacement="stacked" type="{{passwordTypeAttr}}" placeholder="Senha" formControlName="password"></ion-input>
                 <ion-button fill="clear" slot="end" aria-label="Show/hide">
                     <span id="icon-password" class="{{iconPasswordColor}}">
                         <ion-icon slot="icon-only" name="eye" aria-hidden="true" class="fs-5" (click)="showPassord()"></ion-icon>
@@ -66,8 +70,8 @@
                 </ion-button>
             </ion-item>
 
-            <div id="btn-submit" class="mt-3">
-                <ion-button type="submit" color="tertiary" class="mt-3">
+            <div id="btn-submit">
+                <ion-button type="submit" color="tertiary">
                     <ion-icon slot="start" name="checkmark-done-sharp"></ion-icon>
                     Entrar
                 </ion-button>                            

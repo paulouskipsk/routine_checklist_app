@@ -78,7 +78,7 @@
            [autoGrow]="true"
            [(ngModel)]="observation">
            <div slot="label" *ngIf="this.checklistItemMov.type_obs == 'R'">
-              Observações <ion-text color="danger">(Obrigatório)</ion-text>
+              Observações <span class="{{observation =='' ? 'text-danger' : 'text-green-light'}}">(Obrigatório)</span>
            </div>
            <div slot="label" *ngIf="this.checklistItemMov.type_obs == 'O'">Observações (Opcional)</div>
         </ion-textarea>
@@ -88,34 +88,51 @@
   <div class="row" *ngIf="this.checklistItemMov.required_photo =='S'">
      <div class="col-12 m-0 p-1">
         <div class="d-grid gap-2">
-           <button type="button" class="btn btn-dark fw-bold" (click)="getPhoto()" [disabled]="photos.length == checklistItemMov.quant_photo">
-              Tirar Foto &nbsp;<i class="fa-solid fa-camera"></i>
-           </button>   
+         <ion-button color="light" (click)="getPhoto()" [disabled]="photos.length == checklistItemMov.quant_photo">
+               <i class="fa-solid fa-camera"></i> &nbsp; Tirar Foto 
+           </ion-button>
         </div>
      </div>
 
-     <span class="fw-bold fs-12">
+     <span class="fw-bold fs-12 text-{{photos.length == checklistItemMov.quant_photo ? 'success' : 'danger'}}">
         Fotos Obrigatórias: {{photos.length +"/"+ checklistItemMov.quant_photo}}
         <hr class="mt-0"/>
      </span>
 
-     <div class="row" *ngIf="photos.length > 0">
-        <div class="col-3 m-0 p-1" *ngFor="let photo of photos">
-           <img src="data:image/png;base64,{{photo}}" class="img-thumbnail m-0 p-1" (click)="showPhoto(photo)"/>
+     <div class="row p-0 m-0" *ngIf="photos.length > 0">
+        <div class="col-3 p-0 m-0" *ngFor="let photo of photos; let photosIndex = index">
+            <ion-card *ngIf="photos.length > 0" class="m-1 p-0">
+               <ion-card-content class="m-0 p-1">
+                  <ion-img src="data:image/png;base64,{{photo}}" class="img-fluid w-100"></ion-img>
+               </ion-card-content>
+             
+               <ion-button fill="clear" id="btn-delete-photo" class="m-0 pr-1 w-50 justify-content-center" type="button" color="light" (click)="deletePhoto(photosIndex)">
+                  <ion-icon slot="icon-only" color="dark" name="trash-sharp"></ion-icon>
+              </ion-button> 
+
+              <ion-button fill="clear" id="btn-delete-photo" class="m-0 pl-1 w-50 justify-content-center" type="button" color="light" (click)="showPhoto(photo)">
+                  <ion-icon slot="icon-only" color="dark" name="expand-outline"></ion-icon>
+               </ion-button> 
+             </ion-card>
         </div>
      </div>      
   </div>
-
-</ion-content> 
+</ion-content>
 
 <ion-footer>
   <ion-toolbar>
      <div class="row mx-2">
         <div class="col-6">
-           <ion-button expand="full" (click)="back()" color="danger" [strong]="true">Cancelar</ion-button>
+           <ion-button expand="full" (click)="back()" color="danger" [strong]="true">
+            <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+            Cancelar
+         </ion-button>
          </div>
          <div class="col-6">
-            <ion-button expand="full" (click)="submit()" color="success" [strong]="true">Salvar</ion-button>
+            <ion-button expand="full" (click)="submit()" color="success" [strong]="true">
+               <ion-icon slot="start" name="checkmark-done-sharp"></ion-icon>
+               Salvar
+            </ion-button>
          </div>
      </div>
   </ion-toolbar>

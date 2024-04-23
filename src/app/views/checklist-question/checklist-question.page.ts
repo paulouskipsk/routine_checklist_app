@@ -6,6 +6,8 @@ import { HttpService } from 'src/app/services/commons/HttpService';
 import { Routes } from 'src/app/models/utils/Routes';
 import { UtilsService } from 'src/app/services/commons/UtilsService';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { ShowImagePage } from '../modals/show-image/show-image.page';
 
 @Component({
    selector: 'app-checklist-question',
@@ -18,7 +20,12 @@ export class ChecklistQuestionPage implements OnInit {
    public response: String = '';
    public observation: String = '';
 
-   constructor(private router: Router, private utilService: UtilsService, private http: HttpService) {
+   constructor(
+      private router: Router,
+      private utilService: UtilsService,
+      private http: HttpService,
+      private modalCtrl: ModalController
+   ) {
       this.checklistItemMov = StorageService.getAndRemoveSessionItem('checklistItemMov');
    }
 
@@ -97,12 +104,13 @@ export class ChecklistQuestionPage implements OnInit {
 
    public async getPhoto() {
       const image = await Camera.getPhoto({
-         quality: 100,
+         quality: 80,
          allowEditing: false,
+         saveToGallery: false,
          resultType: CameraResultType.Base64,
          source: CameraSource.Camera,
-         height: 800,
-         width: 600,
+         width: 1024,
+         height: 1024,
          direction: CameraDirection.Front,
          correctOrientation: true
       });
@@ -113,8 +121,22 @@ export class ChecklistQuestionPage implements OnInit {
       }
    }
 
-   public showPhoto(photo: String){
-      alert(photo)
+   public async showPhoto(photo: String){
+      let showImage = await this.modalCtrl.create({
+         component: ShowImagePage,
+         componentProps: {
+            photo: photo,
+            checklistItemMov: this.checklistItemMov,
+         },
+     }).then(modal => {
+         modal.present();
+     }) 
+   }
+
+   public deletePhoto(indexPhoto: number){
+      this.utilService.confirmAction("Deseja realmente deletar a foto?").then((resolv: any) => {
+         if(resolv) this.photos.splice(indexPhoto, 1);
+      });
    }
 
    public async submit() {
@@ -135,7 +157,7 @@ export class ChecklistQuestionPage implements OnInit {
             if(this.photos.length >= this.checklistItemMov.quant_photo)
                obj.set('photos', this.photos);
             else {
-               errors.push('Quantidade de fotos informado menor que o exigido.');
+               errors.push('Quantidade de fotos menor que o exigido.');
             }
          } else {
             obj.set('photos', this.photos);
@@ -174,18 +196,19 @@ export class ChecklistQuestionPage implements OnInit {
          }
       } catch (e: any) {
          this.utilService.loaderDismiss(loading);
+         const errorMark = String.fromCharCode(0x2736)+ '  ';
          
          let msg = '';
          if(e.error){
             e?.error?.errors.forEach((element: any) => {
-               msg += element + "\n";
+               msg += errorMark + element + "\n";
             });
 
             this.utilService.toastInfo(msg, 'danger', 8000);
          }else{
             msg = '';
            errors.forEach(element => {
-            msg += element+"\n";
+            msg += errorMark + element+"\n";
            });
            this.utilService.toastInfo(msg, 'danger', 8000);
          }

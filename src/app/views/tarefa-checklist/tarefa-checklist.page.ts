@@ -4,6 +4,7 @@ import { StorageService } from 'src/app/services/commons/StorageService';
 import { Router } from '@angular/router';
 import { Routes } from 'src/app/models/utils/Routes';
 import { UtilsService } from 'src/app/services/commons/UtilsService';
+import { Location } from "@angular/common";
 
 @Component({
    selector: 'app-tarefa-checklist',
@@ -20,7 +21,8 @@ export class TarefaChecklistPage implements OnInit {
    constructor(
       private http: HttpService,
       private router: Router,
-      private utilService: UtilsService
+      private utilService: UtilsService,
+      private location : Location
    ) {     
       this.chmvId = StorageService.getAndRemoveSessionItem('checklistMovId');     
    }
@@ -96,4 +98,21 @@ export class TarefaChecklistPage implements OnInit {
          this.utilService.toastInfo(e?.error?.message, 'danger');
       }
    }
+
+   public back(){
+      this.router.navigateByUrl('/home');
+   }
+
+   public async finishTask(){
+      const questionsLeft = this.checklistItensMovs.length;
+      let msg = '';
+      if(questionsLeft > 0){
+         msg = `\nAinda faltam ${questionsLeft} para serem respondidas.`;
+      }
+
+      if(
+         await this.utilService.confirmAction(`Deseja finalizar o checklist ${this.checklistMov.id}? ${msg}`)
+      ) alert(`Finalizou o checklist ${this.checklistMov.id}`)
+   }
+
 }

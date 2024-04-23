@@ -110,6 +110,23 @@ ion-breadcrumb {
     color: #5606be !important;
     --color: #5606be !important;
 }
+
+.text-green-light {
+    color: #10ce59 !important;
+    --color: #10ce59 !important;
+}
+
+.btn {
+    border-radius: 5px !important;
+}
+
+.btn-tertiary{
+    background-color: #331b83 !important;
+    --background: #331b83 !important;
+    color: white !important;
+    --color: white !important;
+}
+
 // Backgrounds Personalizados
 .bg-routine-header{
     background-color: linear-gradient(0deg, #6814de 0%, #350575 45%, #250452 100%);

@@ -31,8 +31,8 @@
       </div>
       <div class="col-4 ml-0 pl-0 fw-bold">
          <ion-button expand="block" color ="light" (click)="disassociateChecklistmov(checklistMov)">
-            <ion-icon slot="start" name="close-outline" size="small"></ion-icon>
-            <ion-label class="ml-2">Liberar</ion-label>
+            <ion-icon class="mt-0" slot="start" name="lock-open"></ion-icon>
+            <span class="mt-1">Liberar</span>
          </ion-button>
       </div>
    </div>
@@ -43,10 +43,13 @@
          <div class="card-body p-0 border">
 
             <div class="m-0 px-2 fs-15">
-               <span class="fw-bold">Pergunta {{checklistItemMov.id}}: </span>{{checklistItemMov.description}}
+               <span class="fw-bold">Cod. Questão: </span>{{checklistItemMov.id}}
             </div>
             <div class="m-0 p-0 px-2 fs-15">
                <span class="fw-bold">Sequência : </span>{{("000"+checklistItemMov.sequence).slice(-3)}}
+            </div>
+            <div class="m-0 px-2 fs-15">
+               <span class="fw-bold">Descrição: </span>{{checklistItemMov.description}}
             </div>
             <div class="m-0 p-0 px-2 fs-15">
                <span class="fw-bold">Setor: </span>{{checklistItemMov.sector?.description}}
@@ -55,4 +58,24 @@
          </div>
        </div>
    </div>
+
 </ion-content>
+
+<ion-footer>
+   <ion-toolbar>
+      <div class="row px-2">
+         <div class="col-6">
+            <ion-button expand="full" (click)="back()" color="danger" [strong]="true">
+               <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+               Voltar
+            </ion-button>
+          </div>
+          <div class="col-6" (click)="finishTask()">
+             <ion-button expand="full" color="success" [strong]="true">
+               <ion-icon slot="start" name="checkmark-done-sharp"></ion-icon>
+               Finalizar
+            </ion-button>
+          </div>
+      </div>
+   </ion-toolbar>
+</ion-footer>
