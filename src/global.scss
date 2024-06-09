@@ -25,22 +25,29 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+$THEME_COLOR: #520404;
+
 ion-loading.custom-loading {
   .loading-wrapper {
     background-size: 90px;
     --min-width: 2rem;
     height: 65px;
-    --spinner-color	: #8227f8;
-    color: #550db3;
+    --spinner-color	: $THEME_COLOR;
+    color: $THEME_COLOR;
   }
 }
 
 // Personalização de componentes de mensagem
 // Confirm Alert
-.alert-wrapper {
-    --width: 95% !important;
-    width: 95% !important;
-}
+.custom-ion-alert, .alert-wrapper {
+    // background: #bb0b9e;
+ }
+ 
+ .alert-wrapper {
+     --width: 95% !important;
+     width: 95% !important;
+ }
+ 
 
 .md button.alert-button {
     border-radius: 0px;
@@ -57,8 +64,22 @@ ion-loading.custom-loading {
     font-family: Arial, Helvetica, sans-serif !important;
 }
 
+.alert-head{
+    $bg-color : white; //#d61818;
+    background-color: $bg-color !important;
+    --background: $bg-color !important;
+    border-bottom: 1px solid rgb(121, 121, 121) !important;
+    height: 33px;
+    padding-top: 0px !important;
+}
+
 .alert-button-group {
     justify-content: center !important;
+}
+
+.alert-button{
+    height: 1.8em !important;
+    border: none !important;
 }
 
 button.alert-button.alert-button-confirm {
@@ -92,6 +113,7 @@ ion-toast::part(button) {
 ion-breadcrumbs {
     border-bottom: 1px solid rgb(173, 173, 173);
 }
+
 ion-breadcrumb {
     --color: rgb(39, 39, 39);
     --color-active: rgb(48, 39, 66);
@@ -100,7 +122,7 @@ ion-breadcrumb {
     margin: 3px 0px;
     font-size: 12px;
     font-weight: bold !important;
-  }
+}
 
 .breadcrumb-icon {
     color: rgb(39, 39, 39);
@@ -121,16 +143,15 @@ ion-breadcrumb {
 }
 
 .btn-tertiary{
-    background-color: #331b83 !important;
-    --background: #331b83 !important;
+    background-color: $THEME_COLOR !important;
+    --background: $THEME_COLOR !important;
     color: white !important;
     --color: white !important;
 }
 
-// Backgrounds Personalizados
 .bg-routine-header{
-    background-color: linear-gradient(0deg, #6814de 0%, #350575 45%, #250452 100%);
-    --background:  linear-gradient(0deg, rgba(104,20,222,1) 0%, rgba(53,5,117,1) 45%, rgba(37,4,82,1) 100%);
+    background-color:  $THEME_COLOR;
+    --background:  $THEME_COLOR;
     color: white;
 }
 
@@ -139,9 +160,10 @@ ion-breadcrumb {
     --background: white !important;
 }
 
-.bg-purple{
-    background-color: rgba(53,5,117,1) !important;
-    --background: rgba(53,5,117,1) !important;
+.bg-routine{
+    $THEME_COLOR: $THEME_COLOR;
+    background-color: $THEME_COLOR !important;
+    --background: $THEME_COLOR !important;
     color: white;
 }
 
@@ -178,7 +200,6 @@ ion-breadcrumb {
     -moz-box-shadow: -1px 4px 11px -1px rgba(0,0,0,0.75);
     box-shadow: -1px 4px 11px -1px rgba(0,0,0,0.75);
 }
-
 
 .fullscreen {
     --width:100% !important;

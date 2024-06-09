@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { MenuController, Platform } from '@ionic/angular';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { StatusBar } from '@capacitor/status-bar';
-import { Observable } from 'rxjs';
 import { Constants } from './models/utils/Constants';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { UtilsService } from './services/commons/UtilsService';
 
 @Component({
     selector: 'app-root',
@@ -31,9 +31,10 @@ export class AppComponent {
         private menuCtrl: MenuController, 
         private platform: Platform,
         private authGuard: AuthGuard,
+        private utilService: UtilsService
     ) {
         StatusBar.setBackgroundColor({
-            color: "#250452"
+            color: "#520404"
         });
         this.version = Constants.version.description;
         this.menuCtrl.enable(false);
@@ -52,9 +53,11 @@ export class AppComponent {
         });
     }
 
-    public logout() {
-        SessionService.destroySession();
-        this.menuCtrl.enable(false); 
-        this.router.navigate(['login']);
+    public async logout() {
+        if(await this.utilService.confirmAction(`Realmente deseja sair do aplicativo?`)) {
+            SessionService.destroySession();
+            this.menuCtrl.enable(false); 
+            this.router.navigate(['login']);
+        }       
     }
 }

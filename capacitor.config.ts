@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'br.com.routine-checklist',
-  appName: 'Routine Checklist',
+  appName: 'routinechecklist',
   webDir: 'www',
   server: {
     androidScheme: 'https'

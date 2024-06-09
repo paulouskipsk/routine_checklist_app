@@ -20,7 +20,6 @@
         <ion-badge mode="ios" color="tertiary">{{myTasks.length}}</ion-badge>
       </ion-label>           
     </ion-segment-button>
-
   </ion-segment>
 </ion-header>
 
@@ -35,12 +34,13 @@
       <h1 class="no-itens">Não há Checklists Pendentes</h1>
     </div>
 
-    <div class=".bg-img-chkl" *ngIf="pendingTasks.length > 0">
+    <div *ngIf="pendingTasks.length > 0">
       <div *ngFor="let checklistMov of pendingTasks">
+        
         <div class="card border text-left m-2 card-shadow" id="card-home" (click)="openTask(checklistMov)">
-          <div class="card-header border bg-purple fs-6 py-0 pt-1">
+          <div class="card-header border-0 bg-transparent fs-6 p-1 pt-1">
             <div class="row">
-              <div class="col-6 text-start fs-12 fw-bold">CHECKLIST  {{ checklistMov.id }}</div>
+              <div class="col-6 text-start fs-12 fw-bold">CÓDIGO DA TAREFA: {{ checklistMov.id }}</div>
             </div>  
           </div>
 
@@ -71,12 +71,12 @@
 
     <div class=".bg-img-chkl" *ngIf="myTasks.length > 0">
       <div *ngFor="let checklistMov of myTasks">
-        <div class="card border text-left m-2 card-shadow" id="card-home" (click)="openTask(checklistMov)">
-          <div class="card-header border bg-purple fs-6 py-0 pt-1">
-            <div class="row">
-              <div class="col-6 text-start fs-12 fw-bold">CHECKLIST  {{ checklistMov.id }}</div>
-            </div>  
-          </div>
+          <div class="card border text-left m-2 card-shadow" id="card-home" (click)="openTask(checklistMov)">
+            <div class="card-header border-0 bg-transparent fs-6 p-1 pt-1">
+              <div class="row">
+                <div class="col-6 text-start fs-12 fw-bold">CÓDIGO DA TAREFA: {{ checklistMov.id }}</div>
+              </div>  
+            </div>
 
           <div class="card-body pb-0 mb-0">
             <p class="card-title text-start py-1 pl-0 mt-0 fs-12"><span class="fw-bold">Descrição: </span>{{ checklistMov.description }}</p>

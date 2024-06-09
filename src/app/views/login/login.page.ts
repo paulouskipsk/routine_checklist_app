@@ -89,6 +89,9 @@ export class LoginPage implements OnInit {
                 this.utilService.toastInfo(msg, 'danger', 10000);
             }if(responseError.status == 400){
                 this.utilService.toastInfo("Erro ao efetuar login. "+ msg, 'danger', 10000);
+            }if(responseError.status == 405){
+                msg = responseError.error.message;
+                this.utilService.toastInfo("Erro ao comunicar com a API.\n "+ msg, 'danger', 10000);
             }
         }
         this.clearForm();

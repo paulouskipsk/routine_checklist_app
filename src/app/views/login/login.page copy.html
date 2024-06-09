@@ -1,6 +1,9 @@
 <ion-content>
-    
     <div class="header">
+        <div class="text-center" (click)="configServer()" id="logo-img">
+            <img src="assets/images/logo_white.png"/>
+        </div>
+
         <!--Waves Container-->
         <div>
             <svg
@@ -17,25 +20,25 @@
                 <g class="parallax">
                     <use
                         xlink:href="#gentle-wave"
-                        x="30"
+                        x="48"
                         y="0"
                         fill="rgba(255,255,255,0.7"
                     />
                     <use
                         xlink:href="#gentle-wave"
-                        x="30"
+                        x="48"
                         y="3"
                         fill="rgba(255,255,255,0.5)"
                     />
                     <use
                         xlink:href="#gentle-wave"
-                        x="30"
+                        x="48"
                         y="5"
                         fill="rgba(255,255,255,0.3)"
                     />
                     <use
                         xlink:href="#gentle-wave"
-                        x="30"
+                        x="48"
                         y="7"
                         fill="#fff"
                     />
@@ -43,12 +46,12 @@
             </svg>
         </div>
         <!--Waves end-->
+
     </div>
 
-    <div class="container" id="login-container">
-
-        <div class="text-center" (click)="configServer()" id="logo-img">
-            <img src="assets/images/logo.png"/>
+    <div class="container">
+        <div (click)="configServer()" id="logo-img2">
+            <img src="assets/images/routine_logo_purple.png"/>
         </div>
 
         <form class="form" autocomplete="true" [formGroup]="form" (ngSubmit)="submitCredentials()" (keyup.enter)="submitCredentials()">
@@ -62,7 +65,7 @@
                 <ion-input id="input-password" labelPlacement="stacked" type="{{passwordTypeAttr}}" placeholder="Senha" formControlName="password"></ion-input>
                 <ion-button fill="clear" slot="end" aria-label="Show/hide">
                     <span id="icon-password" class="{{iconPasswordColor}}">
-                        <ion-icon slot="icon-only" color="tertiary" name="eye" aria-hidden="true" class="fs-5" (click)="showPassord()"></ion-icon>
+                        <ion-icon slot="icon-only" name="eye" aria-hidden="true" class="fs-5" (click)="showPassord()"></ion-icon>
                     </span>
                 </ion-button>
             </ion-item>
@@ -76,55 +79,8 @@
                     
         </form>
 
-        <div class="text-center text-dark fs-13">
+        <div class="text-center text-primary fs-13">
             {{version}}
-        </div>
-
-
-
-        <div class="header inverted">
-            <!--Waves Container-->
-            <div>
-                <svg
-                    class="waves"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    viewBox="0 24 150 28"
-                    preserveAspectRatio="none"
-                    shape-rendering="auto"
-                >
-                    <defs>
-                        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/>
-                    </defs>
-                    <g class="parallax">
-                        <use
-                            xlink:href="#gentle-wave"
-                            x="30"
-                            y="0"
-                            fill="rgba(255,255,255,0.7"
-                        />
-                        <use
-                            xlink:href="#gentle-wave"
-                            x="30"
-                            y="3"
-                            fill="rgba(255,255,255,0.5)"
-                        />
-                        <use
-                            xlink:href="#gentle-wave"
-                            x="30"
-                            y="5"
-                            fill="rgba(255,255,255,0.3)"
-                        />
-                        <use
-                            xlink:href="#gentle-wave"
-                            x="30"
-                            y="7"
-                            fill="#fff"
-                        />
-                    </g>
-                </svg>
-            </div>
-            <!--Waves end-->
         </div>
     </div>
 

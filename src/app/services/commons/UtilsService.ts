@@ -77,11 +77,13 @@ export class UtilsService {
                 message: message,
                 backdropDismiss: false,
                 keyboardClose: false,
+                cssClass: 'custom-ion-alert',
+                mode: 'ios',
                 buttons:[
                     {
                         text: cancelButtonText,
                         role: 'cancel',
-                        cssClass: 'alert-button-cancel',
+                        cssClass: 'alert-button alert-button-cancel',
                         handler: () => {
                             resolve(false);
                         },
@@ -89,7 +91,7 @@ export class UtilsService {
                     {
                         text: confirmButtonText,
                         role: 'confirm',
-                        cssClass: 'alert-button-confirm',
+                        cssClass: 'alert-button alert-button-confirm',
                         handler: () => {
                             resolve(true);
                         },
