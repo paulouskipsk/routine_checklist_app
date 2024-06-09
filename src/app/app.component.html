@@ -8,9 +8,9 @@
       </ion-list-header>
 
       <div class="mt-3 mb-2">
-        <ion-note class="padding-data" *ngIf="user"><span class="fw-bold">Usuário:&nbsp;</span> {{user?.id}} - {{user?.name}}</ion-note>
-        <ion-note class="padding-data" *ngIf="unity"><span class="fw-bold">Unidade:&nbsp;</span>{{("000"+unity?.id).slice(-3)}} - {{unity?.fantasy_name}}</ion-note>
-        <ion-note class="padding-data" *ngIf="version"><span class="fw-bold text-uppercase mt-1">{{version}}</span></ion-note>
+        <ion-note class="padding-data" *ngIf="unity"><span class="fw-bold text-dark mr-7">Unidade:&nbsp;</span>{{("000"+unity?.id).slice(-3)}}</ion-note>
+        <ion-note class="padding-data" *ngIf="user"><span class="fw-bold text-dark mr-15">Usuário:</span>{{user?.name}}</ion-note>
+        <ion-note class="padding-data" *ngIf="version"><span class="fw-bold text-dark mr-21">Versão:</span>{{version}}</ion-note>
       </div>
 
       <ion-content>

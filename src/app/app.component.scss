@@ -117,16 +117,28 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+.mr-15 {
+  margin-right: 15px;
+}
+.mr-21 {
+  margin-right: 21px;
+}
+
+.mr-7 {
+  margin-right: 7px;
+}
 
 .padding-data {
+  $padding-top: 5px !important;
   --inner-padding-bottom: 0;
   --inner-padding-end: 0;
   --inner-padding-start: 0;
-  --inner-padding-top: 0;
+  --inner-padding-top: $padding-top;
   height: 0em;
   margin: 10px 0 17px 0 !important;
   display: flex;
   font-size: 15px;
+  padding-top: $padding-top;
 }
 
 ion-menu::part(backdrop) {

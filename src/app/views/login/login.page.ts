@@ -19,7 +19,7 @@ import { UtilsService } from 'src/app/services/commons/UtilsService';
 export class LoginPage implements OnInit {
     private loading: any;
     public form!: FormGroup;
-    public version: string = Constants.version.description;
+    public version: string = Constants.version;
     public passwordTypeAttr = 'password';
     public iconPasswordColor = 'text-secondary';
     private data = {

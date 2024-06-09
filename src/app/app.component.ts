@@ -36,7 +36,7 @@ export class AppComponent {
         StatusBar.setBackgroundColor({
             color: "#520404"
         });
-        this.version = Constants.version.description;
+        this.version = Constants.version;
         this.menuCtrl.enable(false);
        this.initializeApp();
     }
