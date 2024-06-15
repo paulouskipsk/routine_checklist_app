@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package br.com.routinechecklist;
 
 import com.getcapacitor.BridgeActivity;
 
