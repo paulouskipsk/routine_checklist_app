@@ -104,13 +104,13 @@ export class ChecklistQuestionPage implements OnInit {
 
    public async getPhoto() {
       const image = await Camera.getPhoto({
-         quality: 80,
+         quality: 100,
          allowEditing: false,
          saveToGallery: false,
          resultType: CameraResultType.Base64,
          source: CameraSource.Camera,
-         width: 1024,
-         height: 1024,
+         // width: 1024,
+         height: 840,
          direction: CameraDirection.Front,
          correctOrientation: true
       });
