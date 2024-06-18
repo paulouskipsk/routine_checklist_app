@@ -78,21 +78,16 @@ export class LoginPage implements OnInit {
             response = await this.http.post(Routes.PATH.GET_USER_DATA_BY_CREDENTIALS, this.data);
             this.utilService.loaderDismiss(this.loading);
 
+            if(response.status_code >=400) throw response.message;
+
             let units = response.payload.units;
             if(!units) throw 'O usuário não possui acesso a nenhuma unidade ativa.';
             this.selectUnity(units);
         } catch (responseError : any) {
-            let msg = responseError.message;
             this.utilService.loaderDismiss(this.loading);
-            if(responseError.status == 401){
-                msg = responseError.error ? responseError.error.message : responseError;
-                this.utilService.toastInfo(msg, 'danger', 10000);
-            }if(responseError.status == 400){
-                this.utilService.toastInfo("Erro ao efetuar login. "+ msg, 'danger', 10000);
-            }if(responseError.status == 405){
-                msg = responseError.error.message;
-                this.utilService.toastInfo("Erro ao comunicar com a API.\n "+ msg, 'danger', 10000);
-            }
+
+            let msg = responseError;
+            this.utilService.toastInfo(msg, 'danger', 10000);
         }
         this.clearForm();
     }
