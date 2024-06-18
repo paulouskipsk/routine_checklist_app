@@ -8,6 +8,10 @@ import { Constants } from './models/utils/Constants';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { UtilsService } from './services/commons/UtilsService';
 
+import { register } from 'swiper/element/bundle';
+// register Swiper custom elements
+register();
+
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
