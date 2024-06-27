@@ -15,6 +15,8 @@ export class HomePage implements OnInit {
    public myTasks: any = new Array();
    public selectedTab: string = "pending";
 
+   public messageEmpty = 'Não há tarefas pendentes';
+
    constructor(
       private http: HttpService,
       private router: Router,
@@ -22,15 +24,18 @@ export class HomePage implements OnInit {
    ) { }
 
    ngOnInit() { }
-
+   
    ionViewWillEnter() {
       this.getPendingTasksForUser();
    }
-
+   
    handleRefresh(event:any) {
+      let loading = this.utilService.loadingStart();
+      this.messageEmpty = '';
       setTimeout(() => {
          this.getPendingTasksForUser();
          event.target.complete();
+         this.utilService.loaderDismiss(loading);
       }, 2000);
    }
 
@@ -55,7 +60,10 @@ export class HomePage implements OnInit {
             this.setTimeLeftInTask(this.myTasks);
          }
          this.utilService.loaderDismiss();
+         this.messageEmpty = 'Não há tarefas pendentes';
       } catch (error) {
+         this.messageEmpty = 'Não há tarefas pendentes';
+         this.utilService.loaderDismiss();
          throw error;
       }
 
@@ -73,11 +81,16 @@ export class HomePage implements OnInit {
 
    public getTimeLeftText(minutes: number){
       let text: String = '';
+      let showTextMinute: boolean = false;
       if(Math.abs(minutes) >= 60 ){
          text += `${Math.floor(minutes / 60).toString()}h`;
          minutes = minutes % 60;
+      }else showTextMinute = true;
+
+      if(Math.abs(minutes) < 60 ) {
+         text += `${Math.abs(minutes)}`;
+         if(showTextMinute) text += 'min';
       }
-      if(Math.abs(minutes) < 60 ) text += `${Math.abs(minutes)}`;
       return text;
    }
 

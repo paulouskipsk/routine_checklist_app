@@ -33,6 +33,13 @@ export class TarefaChecklistPage implements OnInit {
       this.getChecklistMov(); 
    }
 
+   handleRefresh(event:any) {
+      setTimeout(() => {
+         this.getChecklistItensMovs();
+         event.target.complete();
+      }, 2500);
+   }
+
    private async getChecklistMov(){
       this.utilService.loadingStart();
       let response: any = await this.http.get(Routes.PATH.GET_CHECKLIST_MOV +"/"+ this.chmvId);
@@ -49,6 +56,7 @@ export class TarefaChecklistPage implements OnInit {
          if(this.checklistItensMovs == null || this.checklistItensMovs == '') {
             this.checklistItensMovs = new Array();
          } else {
+            this.sectors = new Array();
             this.sectors.push("Todos");
             this.sectorSelected = "Todos";
             this.checklistItensMovs.forEach((checklistItemMov: any) => {
@@ -61,13 +69,6 @@ export class TarefaChecklistPage implements OnInit {
       } catch (error) {
       }
       this.utilService.loaderDismiss();
-   }
-
-   handleRefresh(event:any) {
-      setTimeout(() => {
-         this.getChecklistItensMovs();
-         event.target.complete();
-      }, 2500);
    }
 
    public async questionPage(checklistItemMov:any){

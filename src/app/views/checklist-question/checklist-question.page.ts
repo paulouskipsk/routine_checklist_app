@@ -109,7 +109,6 @@ export class ChecklistQuestionPage implements OnInit {
          saveToGallery: false,
          resultType: CameraResultType.Base64,
          source: CameraSource.Camera,
-         // width: 1024,
          height: 840,
          direction: CameraDirection.Front,
          correctOrientation: true
