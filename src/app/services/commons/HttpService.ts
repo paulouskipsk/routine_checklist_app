@@ -15,6 +15,8 @@ export class HttpService {
 
     public token: any;
     private apiAddress: any;
+    private timeout: number = 80000;
+    private msgErroServidor: string = "Erro ao executar requisição com servidor, verifique a conexão com a Internet ou se o servidor está respondendo.";
 
     constructor(
         private http: HttpClient, 
@@ -25,6 +27,7 @@ export class HttpService {
         if(apiData){
             this.apiAddress = `${apiData.protocol}://${apiData.ip}`;
             this.apiAddress += apiData.port ? `:${apiData.port}/api` : '/api';
+            this.timeout = apiData.timeout ? apiData.timeout * 1000 : 80000;
         }else{
             this.utilService.toastInfo('Endereço da API não foi informado. Verifique!', 'danger');
             this.configServer();
@@ -32,19 +35,22 @@ export class HttpService {
     }
 
     public async post(route: string, data: any) {
+        let response: HttpResponse = {} as HttpResponse;
         try {
             const options = {
                 url: this.apiAddress + route,
+                connectTimeout: this.timeout,
+                readTimeout: this.timeout,
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': "Bearer " + this.getToken()
                 },
                 data: data,
             };        
-            const response: HttpResponse = await CapacitorHttp.post(options);
+            response = await CapacitorHttp.post(options);
             return response.data;
-        } catch (error) {
-            throw "Erro ao fazer o post";
+        } catch (error:any) {
+            throw this.msgErroServidor;
         }
     }
 
@@ -63,6 +69,8 @@ export class HttpService {
             let payload = this.prepareBody(data);
             const options = {
                 url: this.apiAddress + route,
+                connectTimeout: this.timeout,
+                readTimeout: this.timeout,
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': "Bearer " + this.getToken()
@@ -72,7 +80,7 @@ export class HttpService {
             const response: HttpResponse = await CapacitorHttp.put(options);
             return response.data;
         } catch (error) {
-            throw "Erro ao fazer o Put";
+            throw this.msgErroServidor;
         }
     }
 
@@ -80,6 +88,8 @@ export class HttpService {
         try {
             let params = '';
             var options = {
+                connectTimeout: this.timeout,
+                readTimeout: this.timeout,
                 headers: new HttpHeaders({
                     'Content-Type': 'application/json',
                     'Authorization': "Bearer "+this.getToken()
@@ -102,7 +112,7 @@ export class HttpService {
                 });
             });
         } catch (error) {
-            throw "Erro ao fazer o GET";
+            throw this.msgErroServidor;
         }
     }
 
